@@ -10,7 +10,7 @@ import UIKit
 
 enum AlertType {
     
-    case informAlert, oneActionButton, textField, onlyActionButton
+    case informAlertCustom, oneActionButton, textField, onlyActionButton
 }
 
 class FactoryAlert {
@@ -27,13 +27,17 @@ class FactoryAlert {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         func addAction(title: String?, style: UIAlertAction.Style, handler: ((UIAlertAction) -> Void)? = nil) {
+            guard let title = title, !title.isEmpty else {
+                            print("Ошибка: кнопка должна иметь заголовок")
+                            return
+                        }
             let action = UIAlertAction(title: title, style: style, handler: handler)
             alert.addAction(action)
         }
         
         switch alertType {
             
-        case .informAlert:
+        case .informAlertCustom:
             addAction(title: buttonCancel, style: .cancel, handler: nil)
             
         case .oneActionButton:
@@ -51,19 +55,19 @@ class FactoryAlert {
                     completion?(text)
                 } else {
                     FactoryAlert.shared.createAlert(viewController: viewController,
-                                                    alertType: .informAlert,
+                                                    alertType: .informAlertCustom,
                                                     title: "Внимание",
                                                     message: "Имя должно содержать хотя бы 1 символ",
                                                     buttonCancel: "Закрыть",
                                                     buttonAction: nil, completion: nil)
                 }
             }
-            addAction(title: buttonCancel, style: .cancel, handler: nil)
+            addAction(title: buttonCancel, style: .cancel) { _ in
+                completion?("sdf")
+            }
             
         case .onlyActionButton:
-            addAction(title: buttonAction, style: .default) { _ in
-                completion?("fg")
-            }
+            addAction(title: buttonCancel, style: .cancel)
         }
         viewController.present(alert, animated: true)
     }

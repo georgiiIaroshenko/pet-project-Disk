@@ -31,7 +31,7 @@ class ProfileViewModel: ShowAlert {
     }
     
     @objc func rightNavirationBarButtomAction(viewController: UIViewController) {
-        showAlert(viewController: viewController,
+        showAlertCustom(viewController: viewController,
                                     alertType: .oneActionButton,
                                     title: "Предупреждение",
                                     message: "Вы собираетесь выйти с учетной записи",

@@ -2,7 +2,7 @@ import FirebaseAuth
 import UIKit
 import Foundation
 
-class AuthFirebase {
+class AuthFirebase: ShowAlert {
     
     static let shared =  AuthFirebase()
     
@@ -56,17 +56,4 @@ class AuthFirebase {
             }
         }
     }
-    
-    func ressetPassword(viewcontroller: UIViewController, login: String ) {
-        Auth.auth().sendPasswordReset(withEmail: login) { error in
-            if let error = error {
-                FactoryAlert.shared.createAlert(viewController: viewcontroller, alertType: .informAlert, title: "Внимание:", message: "\(error.localizedDescription)", buttonCancel: "Закрыть", buttonAction: nil, completion: nil)
-            }
-                FactoryAlert.shared.createAlert(viewController: viewcontroller, alertType: .informAlert, title: "Внимание:", message: "Проверьте свою почту!", buttonCancel: "Закрыть", buttonAction: nil, completion: nil)
-            
-        }
-        
-        
-    }
-    
 }

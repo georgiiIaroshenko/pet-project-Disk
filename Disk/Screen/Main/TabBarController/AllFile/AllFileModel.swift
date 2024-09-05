@@ -8,7 +8,7 @@ struct GoogleStructeFileList: Decodable {
 
 struct GoogleFile: Decodable {
     let id: String?
-    let name: String?
+    var name: String?
     let mimeType: String?
     let size: String?
     let thumbnailLink: String?

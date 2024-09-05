@@ -8,12 +8,12 @@
 import Foundation
 import UIKit
 
-class OpenFileViewController: UIViewController, Storyboardable {
+class OpenFileViewController: UIViewController, Storyboardable, ActivityViewFullScreen {
     
     var collectionView: UICollectionView!
-    var shareButtom: UIButton!
-    var deleteButtom: UIButton!
-    var rightBarButtonReName: UIButton!
+    var shareButton: UIButton!
+    var deleteButton: UIButton!
+    var rightBarButtonRename: UIButton!
     
     var openFileViewModel: OpenFileViewModel?
     
@@ -21,97 +21,99 @@ class OpenFileViewController: UIViewController, Storyboardable {
         super.viewDidLoad()
         view.backgroundColor = .white
         navigationItem.title = openFileViewModel?.nameFile
-        ActivityFactory.shared.showActivityIndicator(in: self.view)
-        switch openFileViewModel?.mimeType {
-        case .none:
-            break
-        case .some(let mime):
-            switch mime {
-            case "application/vnd.google-apps.folder":
-                openFileViewModel!.requestFolderFileId(){
-                    DispatchQueue.main.async { [unowned self] in
-                        setupCollectionView()
-                        setupRightBarButtonReName()
-                        view.backgroundColor = .white
-                        ActivityFactory.shared.hideActivityIndicator()
-                    }
-                }
-            default:
-                setupCollectionView()
-                setupShareButtom()
-                setupRightBarButtonReName()
-                setupDeleteButtom()
-            }
-        }
+        showActivityIndicator(view: self.view)
+        configureView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        ActivityFactory.shared.showActivityIndicator(in: self.view)
-        switch openFileViewModel?.mimeType {
-        case .none:
-            break
-        case .some(let mime):
-            switch mime {
-            case "application/vnd.google-apps.folder":
-                openFileViewModel!.requestFolderFileId(){
-                    DispatchQueue.main.async { [unowned self] in
-                        ActivityFactory.shared.hideActivityIndicator()
-                    }
+        super.viewWillAppear(animated)
+        showActivityIndicator(view: self.view)
+        refreshView()
+    }
+    
+    private func configureView() {
+        guard let viewModel = openFileViewModel else { return }
+        showActivityIndicator(view: self.view)
+
+        switch viewModel.mimeType {
+        case MIMEType.folder, MIMEType.snapshot:
+            viewModel.requestFolderFileId { [weak self] in
+                DispatchQueue.main.async {
+                    self?.setupCollectionView()
+                    self?.setupRightBarButtonRename()
+                    self?.hideActivityIndicator()
                 }
-            default: break
             }
+        default:
+            setupCollectionView()
+            setupShareButton()
+            setupRightBarButtonRename()
+            setupDeleteButton()
+            hideActivityIndicator()
         }
     }
     
-
-
-    
-    func setupShareButtom() {
-        shareButtom = UIButton()
-        view.addSubview(shareButtom)
-        shareButtom.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
-        shareButtom.tintColor = .systemGray
-        shareButtom.addTarget(self, action: #selector(actionShareButtom), for: .touchDown)
+    private func refreshView() {
+        guard let viewModel = openFileViewModel,
+              viewModel.mimeType == MIMEType.folder || viewModel.mimeType == MIMEType.snapshot else {
+            hideActivityIndicator()
+            return
+        }
         
-        shareButtom.translatesAutoresizingMaskIntoConstraints = false
+        viewModel.requestFolderFileId { [weak self] in
+            DispatchQueue.main.async {
+                self?.hideActivityIndicator()
+            }
+        }
+    }
+
+    private func createButton(imageName: String, action: Selector) -> UIButton {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: imageName), for: .normal)
+        button.tintColor = .systemGray
+        button.addTarget(self, action: action, for: .touchUpInside)
+        return button
+    }
+    
+    func setupShareButton() {
+        shareButton = createButton(imageName: "square.and.arrow.up", action: #selector(actionShareButton))
+        view.addSubview(shareButton)
+        shareButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            shareButtom.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
-            shareButtom.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 54),
-            shareButtom.widthAnchor.constraint(equalToConstant: 26),
-            shareButtom.heightAnchor.constraint(equalToConstant: 26)
+            shareButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+            shareButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 54),
+            shareButton.widthAnchor.constraint(equalToConstant: 26),
+            shareButton.heightAnchor.constraint(equalToConstant: 26),
         ])
     }
     
-    @objc func actionShareButtom() {
-        openFileViewModel!.actionShareButton(viewController: self)
-    }
-    
-    func setupRightBarButtonReName() {
-        rightBarButtonReName = UIButton(type: .custom)
-        rightBarButtonReName.contentMode = .scaleAspectFit
-        rightBarButtonReName.setImage(UIImage(systemName: "pencil"), for: .normal)
-        rightBarButtonReName.tintColor = .systemGray
-        rightBarButtonReName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(actionRightBarButtomReName)))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButtonReName)
-    }
-    
-    @objc func actionRightBarButtomReName() {
-        openFileViewModel!.renameActionRightBarButton(navigationItem: navigationItem, viewController: self)
-    }
-    
-    func setupDeleteButtom() {
-        deleteButtom = UIButton()
-        view.addSubview(deleteButtom)
-        deleteButtom.setImage(UIImage(systemName: "trash"), for: .normal)
-        deleteButtom.tintColor = .systemGray
-        deleteButtom.addTarget(self, action: #selector(deleteItem), for: .touchDown)
-        deleteButtom.translatesAutoresizingMaskIntoConstraints = false
+    func setupDeleteButton() {
+        deleteButton = createButton(imageName: "trash", action: #selector(deleteItem))
+        view.addSubview(deleteButton)
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            deleteButtom.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
-            deleteButtom.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -54),
-            deleteButtom.widthAnchor.constraint(equalToConstant: 26),
-            deleteButtom.heightAnchor.constraint(equalToConstant: 26),
+            deleteButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+            deleteButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -54),
+            deleteButton.widthAnchor.constraint(equalToConstant: 26),
+            deleteButton.heightAnchor.constraint(equalToConstant: 26),
         ])
+    }
+    
+    @objc func actionShareButton() {
+        openFileViewModel?.actionShareButton(viewController: self)
+    }
+    
+    func setupRightBarButtonRename() {
+        rightBarButtonRename = UIButton(type: .custom)
+        rightBarButtonRename.contentMode = .scaleAspectFit
+        rightBarButtonRename.setImage(UIImage(systemName: "pencil"), for: .normal)
+        rightBarButtonRename.tintColor = .systemGray
+        rightBarButtonRename.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(actionRightBarButtonRename)))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButtonRename)
+    }
+    
+    @objc func actionRightBarButtonRename() {
+        openFileViewModel?.renameActionRightBarButton(navigationItem: navigationItem, viewController: self)
     }
     
     @objc func deleteItem() {
@@ -120,7 +122,7 @@ class OpenFileViewController: UIViewController, Storyboardable {
     }
     
     func setupCollectionView() {
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: setupFlowLoyout())
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: setupFlowLayout())
         view.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.isScrollEnabled = false
@@ -137,7 +139,7 @@ class OpenFileViewController: UIViewController, Storyboardable {
         ])
     }
     
-    func setupFlowLoyout() -> UICollectionViewFlowLayout {
+    func setupFlowLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = .init(width: view.bounds.width, height: view.bounds.height)
         return layout
@@ -150,25 +152,28 @@ extension OpenFileViewController: UICollectionViewDataSource{
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch openFileViewModel?.mimeType {
-        case .none:
-            return UICollectionViewCell()
-        case .some(let mime):
-            switch mime {
-            case "application/vnd.google-apps.folder","application/vnd.google-apps.snapshot":
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(OpenFileCollectionViewFolderCell.self)", for: indexPath) as? OpenFileCollectionViewFolderCell else {
-                    return UICollectionViewCell()
-                }
-                cell.setup(files: (self.openFileViewModel?.file)!, coordinator: self.openFileViewModel!.coordinator)
-                return cell
-                
-            default:
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(OpenFileCollectionViewImageCell.self)", for: indexPath) as? OpenFileCollectionViewImageCell else {
-                    return UICollectionViewCell()
-                }
-                openFileViewModel?.requestOneFileId(viewController: self, imageView: cell.imageView)
-                return cell
-            }
-        }
+        guard let viewModel = openFileViewModel else {
+               return UICollectionViewCell()
+           }
+           
+           let cellIdentifier: String
+           switch viewModel.mimeType {
+           case MIMEType.folder, MIMEType.snapshot:
+               cellIdentifier = "\(OpenFileCollectionViewFolderCell.self)"
+           default:
+               cellIdentifier = "\(OpenFileCollectionViewImageCell.self)"
+           }
+           
+           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath)
+           
+           if let folderCell = cell as? OpenFileCollectionViewFolderCell {
+               guard let file = viewModel.file else { return UICollectionViewCell() }
+               folderCell.setup(files: file, coordinator: viewModel.coordinator)
+           } else if let imageCell = cell as? OpenFileCollectionViewImageCell {
+               viewModel.requestOneFileId(viewController: self, imageView: imageCell.imageView)
+           }
+           
+           return cell
     }
 }
+

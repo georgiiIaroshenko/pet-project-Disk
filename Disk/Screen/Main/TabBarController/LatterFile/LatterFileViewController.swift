@@ -1,7 +1,7 @@
 
 import UIKit
 
-class LatterFileViewController: UIViewController, Storyboardable, ShowAlert {
+class LatterFileViewController: UIViewController, Storyboardable, ShowAlert, ActivityViewFullScreen {
     
     @IBOutlet weak var menuCollectionView: UICollectionView!
     @IBOutlet weak var mainCollectionView: UICollectionView!
@@ -16,19 +16,20 @@ class LatterFileViewController: UIViewController, Storyboardable, ShowAlert {
         view.backgroundColor = .lightGray
         navigationController?.navigationBar.tintColor = .gray
         navigationItem.title = "Последнее"
-        ActivityFactory.shared.showActivityIndicator(in: self.view)
-
+        setupMainColletionView()
+        setupMenuColletionView()
+        setupConstraints()
         }
     
     
     override func viewWillAppear(_ animated: Bool) {
-        ActivityFactory.shared.showActivityIndicator(in: self.view)
+        super.viewWillAppear(true)
+        showActivityIndicator(view: self.view)
         self.latterFileViewModel.requestAllFile(collecrion: self.menuCollectionView){ [unowned self] in
             DispatchQueue.main.async { [unowned self] in
-                setupMainColletionView()
-                setupMenuColletionView()
-                setupConstraints()
-                ActivityFactory.shared.hideActivityIndicator()
+                menuCollectionView.reloadData()
+                mainCollectionView.reloadData()
+                hideActivityIndicator()
             }
         }
         menuCollectionView.reloadData()

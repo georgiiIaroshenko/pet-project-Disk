@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-class OpenFileViewModel: ShowAlert {
+class OpenFileViewModel: ShowAlert, PerformRequest {
     
     var idFile: String
     var nameFile: String
@@ -48,116 +48,141 @@ class OpenFileViewModel: ShowAlert {
     }
     
     func requestOneFileId(viewController: UIViewController, imageView: UIImageView) {
-        GoogleRequest.shared.requestsGoogleOneFile(fileID: self.idFile) { [weak self] result in
-                switch result {
-                case .success(let fileId):
-                    DispatchQueue.main.async {
-                        self?.handleSuccessFiles([fileId], imageView: imageView, viewController: viewController)
-                    }
-                case .failure(let error):
-                    print("Ошибка скачивания - \(error.localizedDescription)")
+//        GoogleRequest.shared.requestsGoogleOneFile(fileID: self.idFile) { [weak self] result in
+//                switch result {
+//                case .success(let fileId):
+//                    DispatchQueue.main.async {
+//                        self?.handleSuccessFiles([fileId], imageView: imageView, viewController: viewController)
+//                    }
+//                case .failure(let error):
+//                    print("Ошибка скачивания - \(error.localizedDescription)")
+//                }
+//            }
+        
+        performRequest(
+                request: { GoogleRequest.shared.requestsGoogleOneFile(fileID: self.idFile, completion: $0) },
+                success: { [weak self] fileId in
+                    self?.handleSuccessFiles([fileId], imageView: imageView, viewController: viewController)
+                },
+                failure: { error in
+                    self.showErrorAlert(viewController: viewController, message: error)
                 }
-            }
+            )
     }
     
     func requestFolderFileId(completion: @escaping () -> ()) {
-                GoogleRequest.shared.requestsGoogleFolderFile(idFile: self.idFile) { [weak self] result in
-                    switch result {
-                    case .success(let files):
-                        DispatchQueue.main.async {
-                            self?.handleSuccessFiles(files, imageView: nil, viewController: UIViewController())
-                        }
-                        completion()
-                    case .failure(let error):
-                        print("Ошибка скачивания - \(error.localizedDescription)")
-                    }
+//                GoogleRequest.shared.requestsGoogleFolderFile(idFile: self.idFile) { [weak self] result in
+//                    switch result {
+//                    case .success(let files):
+//                        DispatchQueue.main.async {
+//                            self?.handleSuccessFiles(files, imageView: nil, viewController: UIViewController())
+//                        }
+//                        completion()
+//                    case .failure(let error):
+//                        print("Ошибка скачивания - \(error.localizedDescription)")
+//                    }
+//                }
+        
+        performRequest(
+                request: { GoogleRequest.shared.requestsGoogleFolderFile(idFile: self.idFile, completion: $0) },
+                success: { [weak self] files in
+                    self?.handleSuccessFiles(files, imageView: nil, viewController: UIViewController())
+                    completion()
+                },
+                failure: { error in
+                    print("Ошибка скачивания - \(error.localizedDescription)")
                 }
+            )
     }
     
     func renameActionRightBarButton(navigationItem: UINavigationItem, viewController: UIViewController) {
         DispatchQueue.main.async {
-            self.showAlert(
+            self.showAlertCustom(
                 viewController: viewController,
                 alertType: .textField,
-                title: "Внимание",
-                message: "Введите новое имя",
-                buttonCancel: "Закрыть",
-                buttonAction: "Переименовать"
+                title: AlertTexts.attention,
+                message: AlertTexts.enterNewName,
+                buttonCancel: AlertTexts.close,
+                buttonAction: AlertTexts.rename
             ) { [weak self] newName in
                 guard let self = self else { return }
-                GoogleRequest.shared.requestsUpdateNameGoogleFile(fileID: self.idFile, newName: newName) { [weak self] result in
-                    switch result {
-                    case .success:
-                        DispatchQueue.main.async {
+                
+                performRequest(
+                        request: { GoogleRequest.shared.requestsUpdateNameGoogleFile(fileID: self.idFile, newName: newName, completion: $0) },
+                        success: { [weak self] files in
                             self?.nameFile = newName
                             navigationItem.title = newName
-                            self?.showAlert(
-                                viewController: viewController,
-                                alertType: .informAlert,
-                                title: "Внимание",
-                                message: "Файл успешно переименован",
-                                buttonCancel: "Закрыть",
-                                buttonAction: nil, completion: nil
-                            )
+                            self?.showSuccessAlertInform(viewController: viewController, message: AlertTexts.successRename)
+                        },
+                        failure: { error in
+                            self.showErrorAlert(viewController: viewController, message: error)
+                            print("Ошибка переименования - \(error.localizedDescription)")
                         }
-                    case .failure(let error):
-                        self?.showAlert(
-                            viewController: viewController,
-                            alertType: .informAlert,
-                            title: "Внимание",
-                            message: error.localizedDescription,
-                            buttonCancel: "Закрыть",
-                            buttonAction: nil, completion: nil
-                        )
-                        print("Ошибка переименования - \(error.localizedDescription)")
-                    }
-                }
+                    )
+                
+                
+//                GoogleRequest.shared.requestsUpdateNameGoogleFile(fileID: self.idFile, newName: newName) { [weak self] result in
+//                    switch result {
+//                    case .success:
+//                        DispatchQueue.main.async {
+//                            self?.nameFile = newName
+//                            navigationItem.title = newName
+//                            self?.showSuccessAlertInform(viewController: viewController, message: AlertTexts.successRename)
+//                        }
+//                    case .failure(let error):
+//                        self?.showErrorAlert(viewController: viewController, message: error)
+//                        print("Ошибка переименования - \(error.localizedDescription)")
+//                    }
+//                }
             }
         }
     }
     
     func deleteGoogleFile(navigationItem: UINavigationItem, viewController: UIViewController) {
-        self.showAlert(
+        self.showAlertCustom(
             viewController: viewController,
             alertType: .oneActionButton,
-            title: "Внимание",
-            message: "Вы уверены, что хотите удалить файл?",
-            buttonCancel: "Закрыть",
-            buttonAction: "Удалить"
+            title: AlertTexts.attention,
+            message: AlertTexts.deleteFile,
+            buttonCancel: AlertTexts.close,
+            buttonAction: AlertTexts.delete
         ) { [weak self] _ in
             guard let self = self else { return }
-            GoogleRequest.shared.requestsDeleteGoogleFile(fileID: self.idFile) { result in
-                switch result {
-                case .success:
-                    DispatchQueue.main.async {
-                        self.showAlert(
-                            viewController: viewController,
-                            alertType: .onlyActionButton,
-                            title: "Внимание",
-                            message: "Файл успешно удален",
-                            buttonCancel: nil,
-                            buttonAction: "Назад"
-                        ) {[weak self] _ in
-                            if let navigationController = viewController.navigationController {
-                                navigationController.popViewController(animated: true)
-                            } else {
-                                viewController.dismiss(animated: true, completion: nil)
-                            }
+            
+            performRequest(
+                    request: { GoogleRequest.shared.requestsDeleteGoogleFile(fileID: self.idFile, completion: $0) },
+                    success: { [weak self] _ in
+                        self!.showSuccessAlertAction(viewController: viewController, message: AlertTexts.successDelete)
+                        {_ in 
+                            viewController.navigationController?.popViewController(animated: true)
                         }
+                    },
+                    failure: { error in
+                        self.showErrorAlert(viewController: viewController, message: error)
+                        print("Ошибка переименования - \(error.localizedDescription)")
                     }
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        self.showAlert(
-                            viewController: viewController,
-                            alertType: .informAlert,
-                            title: "Внимание",
-                            message: error.localizedDescription,
-                            buttonCancel: "Закрыть",
-                            buttonAction: nil, completion: nil
-                        )
-                    }
-                }
-            }
+                )
+            
+            
+//            GoogleRequest.shared.requestsDeleteGoogleFile(fileID: self.idFile) { result in
+//                switch result {
+//                case .success:
+//                    DispatchQueue.main.async {
+//                        self.showSuccessAlertAction(viewController: viewController, message: AlertTexts.successDelete, buttonAction: AlertTexts.close)
+//                        {[weak self] _ in
+//                            if let navigationController = viewController.navigationController {
+//                                navigationController.popViewController(animated: true)
+//                            } else {
+//                                viewController.dismiss(animated: true, completion: nil)
+//                            }
+//                        }
+//                    }
+//                case .failure(let error):
+//                    DispatchQueue.main.async {
+//                        self.showErrorAlert(viewController: viewController, message: error)
+//                    }
+//                }
+//            }
         }
     }
     

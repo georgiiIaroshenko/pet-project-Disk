@@ -10,7 +10,7 @@ import UIKit
 class OpenFileCollectionViewFolderCell: UICollectionViewCell {
     
     private let tableView = UITableView()
-    private var coordinator: LatterFileCoordinator!
+    private var coordinator: LatterFileCoordinator?
     private var files: [GoogleFile]?
     
     override init(frame: CGRect) {
@@ -34,7 +34,7 @@ class OpenFileCollectionViewFolderCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setup(files: [GoogleFile], coordinator: LatterFileCoordinator) {
+    func setup(files: [GoogleFile], coordinator: LatterFileCoordinator?) {
         self.files = files
         self.coordinator = coordinator
         self.tableView.reloadData()
@@ -92,10 +92,10 @@ extension OpenFileCollectionViewFolderCell: UITableViewDataSource, UITableViewDe
             return
         case .some(let mime):
             switch mime {
-            case "application/vnd.google-apps.folder","application/vnd.google-apps.snapshot":
-            coordinator.startDeteil(idFile: idFile, nameFile: nameFile, mimeType: mimeType, webContentLink: nil)
+            case MIMEType.folder,MIMEType.snapshot:
+                coordinator?.startDeteil(idFile: idFile, nameFile: nameFile, mimeType: mimeType, webContentLink: nil)
             default:
-            coordinator.startDeteil(idFile: idFile, nameFile: nameFile, mimeType: mimeType, webContentLink: webContentLink)
+                coordinator?.startDeteil(idFile: idFile, nameFile: nameFile, mimeType: mimeType, webContentLink: webContentLink)
             }
         }
        }

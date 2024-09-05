@@ -3,13 +3,10 @@ import FirebaseAuth
 import UIKit
 import Combine
 
-protocol LoginViewModelProtocol {
-    func actionRegisterButtom(viewController: UIViewController, textFieldLogin: String, textFieldPassword: String)
-    func actionEnterButtom(viewController: UIViewController, textFieldLogin: String, textFieldPassword: String)
-    func checkLoginAndPassword(viewController: UIViewController, textFieldLogin: String, textFieldPassword: String, textFieldTwoPassword: String, errorLoginLabel: String, isAuth: Bool)
-}
 
-class LoginViewModel: LoginViewModelProtocol,ShowAlert {
+
+class LoginViewModel: ShowAlert {
+    
     var coordinator: LoginCoordinator
     @Published var errorMessage: String?
         
@@ -51,12 +48,7 @@ class LoginViewModel: LoginViewModelProtocol,ShowAlert {
                 self.coordinator.finish()
                 print("")
             case .failure(let error):
-                FactoryAlert.shared.createAlert(viewController: viewController,
-                                                alertType: .informAlert,
-                                                title: "Ошибка авторизации:",
-                                                message: "\(error.localizedDescription)",
-                                                buttonCancel: "Cancel",
-                                                buttonAction: nil, completion: nil)
+                self.showErrorAlert(viewController: viewController, message: error)
             }
         }
     }
@@ -96,25 +88,19 @@ class LoginViewModel: LoginViewModelProtocol,ShowAlert {
                     case .success(_):
                         print("Firebase - сохранение данных в БД -")
                     case .failure(let error):
-                        self.showAlert(viewController: viewController,
-                                  alertType: .informAlert,
-                                  title: "Ошибка регистрации:",
-                                  message: "\(error.localizedDescription)",
-                                  buttonCancel: "Cancel",
-                                  buttonAction: nil,
-                                  completion: nil)
+                        self.showErrorAlert(viewController: viewController, message: error)
                     }
                 }
             )}
     }
     
     @objc func actionRessetPassword(viewController: UIViewController) {
-        showAlert(viewController: viewController, alertType: .textField, title: "Сброс пароля", message: "Введите email и на него придет ссылка по востановлению пароля", buttonCancel: "Закрыть", buttonAction: "Сбросить") { email in
+        showAlertCustom(viewController: viewController, alertType: .textField, title: "Сброс пароля", message: "Введите email и на него придет ссылка по востановлению пароля", buttonCancel: "Закрыть", buttonAction: "Сбросить") { email in
             Auth.auth().sendPasswordReset(withEmail: email) { [weak self] (error) in
                     if let error = error {
-                        self?.showAlert(viewController: viewController, alertType: .informAlert, title: "Ошибка", message: error.localizedDescription, buttonCancel: "Закрыть", buttonAction: nil, completion: nil)
+                        self?.showErrorAlert(viewController: viewController, message: error)
                     } else {
-                        self?.showAlert(viewController: viewController, alertType: .informAlert, title: "Внимание", message: "Письмо благополучно отправлено на указаную почту", buttonCancel: "Закрыть", buttonAction: nil, completion: nil)
+                        self?.showSuccessAlertInform(viewController: viewController, message: "Письмо благополучно отправлено на указаную почту")
                     }
                 }
         }
