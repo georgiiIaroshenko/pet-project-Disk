@@ -9,21 +9,24 @@ import UIKit
 
 class OpenFileCollectionViewFolderCell: UICollectionViewCell {
     
-    let tableView = UITableView()
-    var coordinator: LatterFileCoordinator!
-    var files: [GoogleFile]?
+    private let tableView = UITableView()
+    private var coordinator: LatterFileCoordinator!
+    private var files: [GoogleFile]?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(tableView)
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .black
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+
         let nib = UINib(nibName: "CastomTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "CastomTableViewCell")
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.snp.makeConstraints { make in
-            make.top.leading.bottom.trailing.equalTo(contentView)
+            make.edges.equalTo(contentView)
         }
     }
     
@@ -40,30 +43,32 @@ class OpenFileCollectionViewFolderCell: UICollectionViewCell {
 
 extension OpenFileCollectionViewFolderCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CastomTableViewCell") as! CastomTableViewCell
-        let file = files![indexPath.item]
-        let name = file.name
-        cell.nameLabel.text = name
-        
-        if file.size == nil{
-            let date = file.modifiedTime
-            let fixDate = ChangeDate.init(dateString: date!).changeDate()
-            let weightDataTimeLabel = fixDate
-            cell.weightDataTimeLabel.text = weightDataTimeLabel
-        } else {
-            let weight = ConvertWeight.init(sizeString: file.size ?? "0").convertWeight()
-            let date = file.modifiedTime
-            let fixDate = ChangeDate.init(dateString: date!).changeDate()
-            let weightDataTimeLabel = weight + " " + fixDate
-            cell.weightDataTimeLabel.text = weightDataTimeLabel
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CastomTableViewCell") as? CastomTableViewCell,
+              let file = files?[indexPath.row] else {
+            return UITableViewCell()
         }
-        UniversalRequest.shared.universalSetImageFromStringrURL(imageView: cell.optionImage, stringURL: file.iconLink! )
+        
+        configureCell(cell, with: file)
+        
         return cell
     }
     
+    private func configureCell(_ cell: CastomTableViewCell, with file: GoogleFile) {
+            cell.nameLabel.text = file.name
+            
+            let date = ChangeDate(dateString: file.modifiedTime ?? "").changeDate()
+            let weight = file.size.map { ConvertWeight(sizeString: $0).convertWeight() } ?? ""
+            cell.weightDataTimeLabel.text = "\(weight) \(date)"
+            
+            if let iconLink = file.iconLink {
+                UniversalRequest.shared.universalSetImageFromStringrURL(imageView: cell.optionImage, stringURL: iconLink)
+            } else {
+                cell.optionImage.image = UIImage(systemName: "questionmark")
+            }
+        }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return self.files?.count ?? 0
     }
     
@@ -71,27 +76,27 @@ extension OpenFileCollectionViewFolderCell: UITableViewDataSource, UITableViewDe
         return 50
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch  files?[indexPath.item].mimeType {
+        guard let file = files?[indexPath.row],
+                      let idFile = file.id,
+                      let nameFile = file.name,
+              let mimeType = file.mimeType else {
+            return
+        }
+        
+        handleFileSelection(file, idFile: idFile, nameFile: nameFile, mimeType: mimeType, webContentLink: file.webContentLink)
+    }
+    
+    private func handleFileSelection(_ file: GoogleFile, idFile: String, nameFile: String, mimeType: String, webContentLink: String?) {
+        switch  file.mimeType {
         case .none:
             return
         case .some(let mime):
             switch mime {
             case "application/vnd.google-apps.folder","application/vnd.google-apps.snapshot":
-                guard 
-                    let idFile = files?[indexPath.item].id,
-                    let nameFile = files?[indexPath.item].name,
-                    let mimeType = files?[indexPath.item].mimeType
-                else { return }
-                coordinator.startDeteil(idFile: idFile, nameFile: nameFile, mimeType: mimeType, webContentLink: nil)
+            coordinator.startDeteil(idFile: idFile, nameFile: nameFile, mimeType: mimeType, webContentLink: nil)
             default:
-                guard 
-                    let idFile = files?[indexPath.item].id,
-                    let nameFile = files?[indexPath.item].name,
-                    let mimeType = files?[indexPath.item].mimeType,
-                    let webContentLink = files?[indexPath.item].webContentLink
-                else { return }
-                coordinator.startDeteil(idFile: idFile, nameFile: nameFile, mimeType: mimeType, webContentLink: webContentLink)
+            coordinator.startDeteil(idFile: idFile, nameFile: nameFile, mimeType: mimeType, webContentLink: webContentLink)
             }
         }
-    }
+       }
 }
