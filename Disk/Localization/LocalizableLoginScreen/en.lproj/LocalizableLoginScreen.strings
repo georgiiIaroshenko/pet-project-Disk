@@ -1,0 +1,34 @@
+/* 
+  LocalizableLoginScreen.strings
+  Disk
+
+  Created by Георгий on 07.07.2024.
+  
+*/
+
+
+"grand_label_auth_text" = "Authorization";
+"grand_label_reg_text" = "Registration";
+
+
+"registration_button_text" = "Not with us yet?";
+"registration_button_text" = "Autorization";
+
+"button_Enter_AUTH" = "Enter";
+"button_Enter_REG" = "Register";
+
+"login_text_field_reg_placeholder" = "Register login";
+"login_text_field_auth_placeholder" = "Enter login";
+
+"register_text_field_reg_placeholder" = "Register password";
+"register_text_field_auth_placeholder" = "Enter password";
+
+"switching_Registration_Or_Authorization_Button_AUTH" = "Not with us yet?";
+"switching_Registration_Or_Authorization_Button_REG" = "Go to authorization!";
+
+"resset_password_button" = "Forgot your password?";
+
+
+
+
+

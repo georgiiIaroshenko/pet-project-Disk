@@ -1,0 +1,6 @@
+framework module Pods_Disk_DiskUITests {
+  umbrella header "Pods-Disk-DiskUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,6 @@
+framework module Pods_Disk {
+  umbrella header "Pods-Disk-umbrella.h"
+
+  export *
+  module * { export * }
+}
