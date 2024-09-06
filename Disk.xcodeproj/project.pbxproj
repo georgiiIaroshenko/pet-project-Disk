@@ -37,7 +37,9 @@
 		66528EF32C309B0F00806F28 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66528EF22C309B0F00806F28 /* LoginViewController.swift */; };
 		66528EF52C309B3500806F28 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66528EF42C309B3500806F28 /* LoginModel.swift */; };
 		66528EF72C309B5C00806F28 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66528EF62C309B5C00806F28 /* LoginViewModel.swift */; };
-		666445A92C5A59B600744F2D /* ChangeDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666445A82C5A59B600744F2D /* ChangeDate.swift */; };
+		666445A92C5A59B600744F2D /* ChangeDateAndWeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666445A82C5A59B600744F2D /* ChangeDateAndWeight.swift */; };
+		666F56EB2C8B383400ED0ADE /* AlertProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666F56EA2C8B383400ED0ADE /* AlertProtocol.swift */; };
+		666F56ED2C8B388300ED0ADE /* ActivityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666F56EC2C8B388300ED0ADE /* ActivityProtocol.swift */; };
 		666FFB0B2C5F936100AA2E2A /* OpenFileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666FFB0A2C5F936100AA2E2A /* OpenFileViewController.swift */; };
 		666FFB0D2C5F937D00AA2E2A /* OpenFileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666FFB0C2C5F937D00AA2E2A /* OpenFileViewModel.swift */; };
 		666FFB0F2C5F938E00AA2E2A /* OpenFileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666FFB0E2C5F938E00AA2E2A /* OpenFileModel.swift */; };
@@ -49,7 +51,7 @@
 		668BD0D82C65411200538425 /* ScreenFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668BD0D72C65411200538425 /* ScreenFactory.swift */; };
 		66A1633E2C42F51F001BD7CE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 66A1633D2C42F51F001BD7CE /* GoogleService-Info.plist */; };
 		66A514582C87738D009F66A7 /* OnboardingSliderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A514572C87738D009F66A7 /* OnboardingSliderManager.swift */; };
-		66A5145A2C8889C1009F66A7 /* MainProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A514592C8889C1009F66A7 /* MainProtocol.swift */; };
+		66A5145A2C8889C1009F66A7 /* CreatePlaceholderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A514592C8889C1009F66A7 /* CreatePlaceholderProtocol.swift */; };
 		66A5145D2C88B311009F66A7 /* LocalizableLoginScreenEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A5145C2C88B311009F66A7 /* LocalizableLoginScreenEnum.swift */; };
 		66A6F4E32C8A12030011F2C3 /* MainEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A6F4E22C8A12030011F2C3 /* MainEnum.swift */; };
 		66A6F4E52C8A4FBD0011F2C3 /* PerformRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A6F4E42C8A4FBD0011F2C3 /* PerformRequest.swift */; };
@@ -177,7 +179,9 @@
 		66528EF22C309B0F00806F28 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		66528EF42C309B3500806F28 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		66528EF62C309B5C00806F28 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		666445A82C5A59B600744F2D /* ChangeDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeDate.swift; sourceTree = "<group>"; };
+		666445A82C5A59B600744F2D /* ChangeDateAndWeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeDateAndWeight.swift; sourceTree = "<group>"; };
+		666F56EA2C8B383400ED0ADE /* AlertProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertProtocol.swift; sourceTree = "<group>"; };
+		666F56EC2C8B388300ED0ADE /* ActivityProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityProtocol.swift; sourceTree = "<group>"; };
 		666FFB0A2C5F936100AA2E2A /* OpenFileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFileViewController.swift; sourceTree = "<group>"; };
 		666FFB0C2C5F937D00AA2E2A /* OpenFileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFileViewModel.swift; sourceTree = "<group>"; };
 		666FFB0E2C5F938E00AA2E2A /* OpenFileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFileModel.swift; sourceTree = "<group>"; };
@@ -192,7 +196,7 @@
 		66A163402C42FCD8001BD7CE /* FirebaseCoreInternal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCoreInternal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		66A163412C42FCD8001BD7CE /* FirebaseInstallations.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseInstallations.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		66A514572C87738D009F66A7 /* OnboardingSliderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSliderManager.swift; sourceTree = "<group>"; };
-		66A514592C8889C1009F66A7 /* MainProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainProtocol.swift; sourceTree = "<group>"; };
+		66A514592C8889C1009F66A7 /* CreatePlaceholderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePlaceholderProtocol.swift; sourceTree = "<group>"; };
 		66A5145C2C88B311009F66A7 /* LocalizableLoginScreenEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableLoginScreenEnum.swift; sourceTree = "<group>"; };
 		66A6F4E22C8A12030011F2C3 /* MainEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEnum.swift; sourceTree = "<group>"; };
 		66A6F4E42C8A4FBD0011F2C3 /* PerformRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformRequest.swift; sourceTree = "<group>"; };
@@ -484,7 +488,9 @@
 			isa = PBXGroup;
 			children = (
 				66528EE22C30947100806F28 /* Storyboardable.swift */,
-				66A514592C8889C1009F66A7 /* MainProtocol.swift */,
+				66A514592C8889C1009F66A7 /* CreatePlaceholderProtocol.swift */,
+				666F56EA2C8B383400ED0ADE /* AlertProtocol.swift */,
+				666F56EC2C8B388300ED0ADE /* ActivityProtocol.swift */,
 			);
 			name = Protocol;
 			sourceTree = "<group>";
@@ -500,7 +506,7 @@
 		666445A72C5A599400744F2D /* ScreenFactory */ = {
 			isa = PBXGroup;
 			children = (
-				666445A82C5A59B600744F2D /* ChangeDate.swift */,
+				666445A82C5A59B600744F2D /* ChangeDateAndWeight.swift */,
 				6639DECE2C4927D60073503F /* AlertFactory.swift */,
 				66EE5D012C7BBDCF000F8346 /* FullScreenActivity.swift */,
 			);
@@ -892,9 +898,11 @@
 				6618C63C2C3560BE00909E4F /* ProfileModel.swift in Sources */,
 				66D6A7B82C63D30900876FE7 /* ProfileCoordinator.swift in Sources */,
 				6618C6322C35602100909E4F /* LatterFileViewController.swift in Sources */,
-				66A5145A2C8889C1009F66A7 /* MainProtocol.swift in Sources */,
-				666445A92C5A59B600744F2D /* ChangeDate.swift in Sources */,
+				66A5145A2C8889C1009F66A7 /* CreatePlaceholderProtocol.swift in Sources */,
+				666445A92C5A59B600744F2D /* ChangeDateAndWeight.swift in Sources */,
+				666F56EB2C8B383400ED0ADE /* AlertProtocol.swift in Sources */,
 				66528EE82C3094FC00806F28 /* OnboardingViewModel.swift in Sources */,
+				666F56ED2C8B388300ED0ADE /* ActivityProtocol.swift in Sources */,
 				66A514582C87738D009F66A7 /* OnboardingSliderManager.swift in Sources */,
 				668BD0D62C6535B500538425 /* ServicesEnterLayer.swift in Sources */,
 				667DBCFF2C41B611001B1DFE /* DatabaseFirebase.swift in Sources */,

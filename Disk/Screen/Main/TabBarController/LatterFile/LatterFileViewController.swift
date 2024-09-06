@@ -23,16 +23,16 @@ class LatterFileViewController: UIViewController, Storyboardable, ShowAlert, Act
     
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         showActivityIndicator(view: self.view)
-        self.latterFileViewModel.requestAllFile(collecrion: self.menuCollectionView){ [unowned self] in
-            DispatchQueue.main.async { [unowned self] in
-                menuCollectionView.reloadData()
-                mainCollectionView.reloadData()
-                hideActivityIndicator()
+        self.latterFileViewModel.requestAllFile(collection: self.menuCollectionView){ [weak self] in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.menuCollectionView.reloadData()
+                self.mainCollectionView.reloadData()
+                self.hideActivityIndicator()
             }
         }
-        menuCollectionView.reloadData()
     }
 
     //MARK: - Setup Menu CollectionView

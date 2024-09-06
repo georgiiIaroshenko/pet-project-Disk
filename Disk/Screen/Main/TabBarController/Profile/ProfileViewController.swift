@@ -49,6 +49,7 @@ class ProfileViewController: UIViewController, Storyboardable {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = false
         profileViewModel?.requestAbout(imageViewGoogleUser: imageViewGoogleUser)
         print("ProfileViewController will appear")

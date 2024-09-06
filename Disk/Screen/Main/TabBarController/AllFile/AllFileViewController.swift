@@ -39,6 +39,7 @@ class AllFileViewController: UIViewController, Storyboardable {
 
     }
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = false
         self.allFileViewModel?.requestAllFile(tableView: tableView, activityIndicator: activityIndicator)
 

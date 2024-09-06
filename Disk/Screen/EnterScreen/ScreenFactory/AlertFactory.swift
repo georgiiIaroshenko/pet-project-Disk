@@ -62,12 +62,12 @@ class FactoryAlert {
                                                     buttonAction: nil, completion: nil)
                 }
             }
-            addAction(title: buttonCancel, style: .cancel) { _ in
-                completion?("sdf")
-            }
+            addAction(title: buttonCancel, style: .cancel)
             
         case .onlyActionButton:
-            addAction(title: buttonCancel, style: .cancel)
+            addAction(title: buttonAction, style: .default){ _ in
+                completion?("sdf")
+            }
         }
         viewController.present(alert, animated: true)
     }

@@ -37,7 +37,6 @@ class ConvertWeight {
     }
     
     func convertWeight() -> String {
-        let tokens = ["б", "кб", "мб", "г", "тб", "PB", "EB", "ZB", "YB"]
         guard let initialSize = Double(sizeString) else { return "" }
         
         var size = initialSize

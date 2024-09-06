@@ -12,7 +12,7 @@ class LatterFileViewModel {
         self.coordinator = coordinator!
     }
     
-    func requestAllFile(collecrion: UICollectionView,complited:@escaping () -> ()) {
+    func requestAllFile(collection: UICollectionView,complited:@escaping () -> ()) {
         
         GoogleRequest.shared.requestsAllFile(nameStorage: .google) { result in
             switch result {

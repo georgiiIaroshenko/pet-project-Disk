@@ -1,28 +1,6 @@
-//
-//  MainProtocol.swift
-//  Disk
-//
-//  Created by Георгий on 04.09.2024.
-//
-
-import Foundation
 import UIKit
 
-protocol CreatePlaceholder {
-    func createPlaceholder(for key: LocalizedKeys, localized: String) -> String
-}
 
-extension CreatePlaceholder {
-    func createPlaceholder(for key: LocalizedKeys, localized: String) -> String {
-        return NSLocalizedString(key.rawValue, tableName: localized, comment: "")
-    }
-}
-
-extension String {
-    func localized(tableName: String = "Localizable") -> String {
-        return NSLocalizedString(self, tableName: tableName, value: "****\(self)****", comment: "")
-    }
-}
 protocol ShowAlert {
     func showAlertCustom(viewController: UIViewController, alertType: AlertType, title: String, message: String, buttonCancel: String?, buttonAction: String?, completion: ((String) -> Void)?)
     func showErrorAlert(viewController: UIViewController, message: Error)
@@ -40,7 +18,7 @@ extension ShowAlert {
     }
     
     func showSuccessAlertAction(viewController: UIViewController, message: String, completion: ((String) -> Void)?) {
-        FactoryAlert.shared.createAlert(viewController: viewController, alertType: .oneActionButton, title: AlertTexts.attention, message: message, buttonCancel: AlertTexts.close, buttonAction: nil, completion: completion)
+        FactoryAlert.shared.createAlert(viewController: viewController, alertType: .oneActionButton, title: AlertTexts.attention, message: message, buttonCancel: nil, buttonAction: AlertTexts.close, completion: completion)
     }
     
     func showSuccessAlertInform(viewController: UIViewController, message: String) {
@@ -57,19 +35,4 @@ enum AlertTexts {
     static let successRename = "Файл успешно переименован"
     static let successDelete = "Файл успешно удален"
     static let enterNewName = "Введите новое имя"
-}
-
-protocol ActivityViewFullScreen {
-    func showActivityIndicator(view: UIView)
-    func hideActivityIndicator()
-}
-
-
-extension ActivityViewFullScreen {
-    func showActivityIndicator(view: UIView) {
-        ActivityFactory.shared.showActivityIndicator(in: view)
-    }
-    func hideActivityIndicator() {
-        ActivityFactory.shared.hideActivityIndicator()
-    }
 }

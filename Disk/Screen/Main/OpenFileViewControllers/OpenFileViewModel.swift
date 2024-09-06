@@ -152,7 +152,7 @@ class OpenFileViewModel: ShowAlert, PerformRequest {
             performRequest(
                     request: { GoogleRequest.shared.requestsDeleteGoogleFile(fileID: self.idFile, completion: $0) },
                     success: { [weak self] _ in
-                        self!.showSuccessAlertAction(viewController: viewController, message: AlertTexts.successDelete)
+                        self?.showSuccessAlertAction(viewController: viewController, message: AlertTexts.successDelete)
                         {_ in 
                             viewController.navigationController?.popViewController(animated: true)
                         }
