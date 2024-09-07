@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainCollectionViewCell: UICollectionViewCell {
+class MainCollectionViewCell: UICollectionViewCell, ImageRequestProtocol {
     
     private var tableView = UITableView()
     private var files: [GoogleFile]?
@@ -61,7 +61,18 @@ extension MainCollectionViewCell: UITableViewDelegate, UITableViewDataSource {
             let weightDataTimeLabel = weight + " " + fixDate
             cell.weightDataTimeLabel.text = weightDataTimeLabel
         }
-        UniversalRequest.shared.universalSetImageFromStringrURL(imageView: cell.optionImage, stringURL: file.iconLink! )
+        Task {
+            do {
+                let data = try await universalGetImage(stringURL: file.iconLink! )
+                DispatchQueue.main.async {
+                    cell.optionImage.image = UIImage(data: data)
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    cell.optionImage.image = UIImage(systemName: "questionmark")
+                }
+            }
+        }
         return cell
     }
     

@@ -13,7 +13,6 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         settingTabBar()
-//        tabBarController?.tabBar.barStyle = .black
     }
     
     init(tabBarControllers: [UIViewController]) {

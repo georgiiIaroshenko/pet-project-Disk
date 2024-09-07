@@ -3,7 +3,7 @@ import UIKit
 import SwiftUI
 
 class ProfileViewController: UIViewController, Storyboardable {
-
+    
     @IBOutlet weak var publicFile: UIButton!
     @IBOutlet weak var yandexAuth: UIButton!
     @IBOutlet weak var appleAuth: UIButton!
@@ -22,7 +22,7 @@ class ProfileViewController: UIViewController, Storyboardable {
         setupImageViewGoogleUser()
         setupConstraints()
         setupNavigationBar()
-
+        
         print("Скачиваю файлы")
         publicFile.setTitle("Опубликованые файлы", for: .normal)
         
@@ -31,7 +31,7 @@ class ProfileViewController: UIViewController, Storyboardable {
     func setupStackButtomAuth() {
         view.addSubview(stackButtomAuth)
         stackButtomAuth.translatesAutoresizingMaskIntoConstraints = false
-
+        
         stackButtomAuth.addSubview(yandexAuth)
         stackButtomAuth.addSubview(appleAuth)
         stackButtomAuth.addSubview(googleAuth)
@@ -39,13 +39,13 @@ class ProfileViewController: UIViewController, Storyboardable {
     
     func setupPublicFile() {
         view.addSubview(publicFile)
-
+        
     }
     
     func setupImageViewGoogleUser() {
         view.addSubview(imageViewGoogleUser)
         imageViewGoogleUser.translatesAutoresizingMaskIntoConstraints = false
-
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

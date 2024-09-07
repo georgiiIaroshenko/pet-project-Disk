@@ -79,7 +79,7 @@ extension LatterFileViewController: UICollectionViewDataSource, UICollectionView
             let group = latterFileViewModel.massiveFiles
             return group()
         } else 
-            //   SETUP MAIN CollectionView
+        //   SETUP MAIN CollectionView
         {
             let group = latterFileViewModel.massiveFiles
             return group()
@@ -178,6 +178,4 @@ extension String {
         
         return ceil(size.width)
     }
-    
-    
 }

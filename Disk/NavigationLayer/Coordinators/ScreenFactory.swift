@@ -50,18 +50,20 @@ struct ScreenFactory {
             latterFileCoordinator.finishDelegate = finishDelegate
             latterFileCoordinator.start()
             
-            let allFileNavigationController = UINavigationController()
-            allFileNavigationController.navigationBar.prefersLargeTitles = false
-            let allFileCoordinator = AllFileCoordinator(type: .allFile, navicationController: allFileNavigationController)
-            allFileNavigationController.tabBarItem = UITabBarItem(title: "Все файлы", image: UIImage(systemName: "externaldrive.fill.badge.checkmark"), tag: 2)
-            allFileCoordinator.finishDelegate = finishDelegate
-            allFileCoordinator.start()
+//            let allFileNavigationController = UINavigationController()
+//            allFileNavigationController.navigationBar.prefersLargeTitles = false
+//            let allFileCoordinator = AllFileCoordinator(type: .allFile, navicationController: allFileNavigationController)
+//            allFileNavigationController.tabBarItem = UITabBarItem(title: "Все файлы", image: UIImage(systemName: "externaldrive.fill.badge.checkmark"), tag: 2)
+//            allFileCoordinator.finishDelegate = finishDelegate
+//            allFileCoordinator.start()
             
             coordinator.addChildCoordinator(profileCoordinator)
             coordinator.addChildCoordinator(latterFileCoordinator)
-            coordinator.addChildCoordinator(allFileCoordinator)
+//            coordinator.addChildCoordinator(allFileCoordinator)
             
-            let tabBarControllers = [profileNavigationController, latterFileNavigationController, allFileNavigationController]
+            let tabBarControllers = [profileNavigationController, latterFileNavigationController
+//                                     , allFileNavigationController
+            ]
             
             let tabBarController = TabBarController(tabBarControllers: tabBarControllers)
             
@@ -100,17 +102,17 @@ struct ScreenFactory {
     }
     // MARK: - AllFile
     
-    static func makeAllFileFlow(coordinator: AppCoordinator, navicationController: UINavigationController,finishDelegate: CoordinatorFinishDelegate) {
-        let allFileCoordinator = AllFileCoordinator(type: .allFile, navicationController: navicationController, finishDelegate: finishDelegate)
-        coordinator.addChildCoordinator(allFileCoordinator)
-        allFileCoordinator.start()
-    }
-    
-    static func makeAllFileScreen(coordinator: AllFileCoordinator) -> AllFileViewController {
-        let vc = AllFileViewController.createNaviObject()
-        let viewModel = AllFileViewModel(coordinator: coordinator)
-        vc.allFileViewModel = viewModel
-        
-        return vc
-    }
+//    static func makeAllFileFlow(coordinator: AppCoordinator, navicationController: UINavigationController,finishDelegate: CoordinatorFinishDelegate) {
+//        let allFileCoordinator = AllFileCoordinator(type: .allFile, navicationController: navicationController, finishDelegate: finishDelegate)
+//        coordinator.addChildCoordinator(allFileCoordinator)
+//        allFileCoordinator.start()
+//    }
+//    
+//    static func makeAllFileScreen(coordinator: AllFileCoordinator) -> AllFileViewController {
+//        let vc = AllFileViewController.createNaviObject()
+//        let viewModel = AllFileViewModel(coordinator: coordinator)
+//        vc.allFileViewModel = viewModel
+//        
+//        return vc
+//    }
 }

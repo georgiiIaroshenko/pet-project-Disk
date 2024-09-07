@@ -3,7 +3,7 @@ import UIKit
 import GoogleSignIn
 import FirebaseAuth
 
-class ProfileViewModel: ShowAlert {
+class ProfileViewModel: ShowAlert, GoogleDriveRequest, ImageRequestProtocol {
     var googleUser: GoogleUserStruct = GoogleUserStruct(id: "", repositories: Storage(nameStorage: "", accessToken: "", refreshToken: "", idAccessToken: ""))
     var fileUser: UserGL?
     
@@ -15,28 +15,35 @@ class ProfileViewModel: ShowAlert {
     
     func requestAbout(imageViewGoogleUser: UIImageView) {
         
-        GoogleRequest.shared.requestsGoogleAbout() { result in
+        requestsGoogleAbout() { result in
             switch result {
             case .success(let resultAbout):
                 self.fileUser = resultAbout.user
-                self.setImageFromStringrURL(imageViewGoogleUser: imageViewGoogleUser)
+                Task {
+                    do {
+                        let data = try await self.universalGetImage(stringURL: self.fileUser?.photoLink ?? "")
+                        DispatchQueue.main.async {
+                            imageViewGoogleUser.image = UIImage(data: data)
+                        }
+                    } catch {
+                        DispatchQueue.main.async {
+                            imageViewGoogleUser.image = UIImage(systemName: "questionmark")
+                        }
+                    }
+                }
             case .failure(let errorAbout):
                 print("errorAbout: \(errorAbout)")
             }
         }
     }
     
-    func setImageFromStringrURL(imageViewGoogleUser: UIImageView) {
-        UniversalRequest.shared.universalSetImageFromStringrURL(imageView: imageViewGoogleUser, stringURL: fileUser?.photoLink ?? "")
-    }
-    
     @objc func rightNavirationBarButtomAction(viewController: UIViewController) {
         showAlertCustom(viewController: viewController,
-                                    alertType: .oneActionButton,
-                                    title: "Предупреждение",
-                                    message: "Вы собираетесь выйти с учетной записи",
-                                    buttonCancel: "Закрыть",
-                  buttonAction: "Выйти") { [weak self]_ in
+                        alertType: .oneActionButton,
+                        title: "Предупреждение",
+                        message: "Вы собираетесь выйти с учетной записи",
+                        buttonCancel: "Закрыть",
+                        buttonAction: "Выйти") { [weak self]_ in
             self?.coordinator?.finish()
             try! Auth.auth().signOut()
         }

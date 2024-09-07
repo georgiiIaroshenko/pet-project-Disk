@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-class OpenFileViewModel: ShowAlert, PerformRequest {
+class OpenFileViewModel: ShowAlert, PerformRequest, MimeType, GoogleDriveRequest, ImageRequestProtocol {
     
     var idFile: String
     var nameFile: String
@@ -27,72 +27,81 @@ class OpenFileViewModel: ShowAlert, PerformRequest {
         self.webContentLink = webContentLink
     }
     
-    func getImage(imageView: UIImageView, url: String) {
-        UniversalRequest.shared.universalSetImageFromStringrURL(imageView: imageView, stringURL: url)
-    }
-
-    func handleSuccessFiles(_ files: [GoogleFile], imageView: UIImageView?, viewController: UIViewController) {
+    func handleSuccessFiles(_ files: [GoogleFile], imageView: UIImageView?, viewController: UIViewController) async throws {
         self.file?.removeAll()
         self.file = files
         
-        if let fileId = files.first, let imageView = imageView {
-            let imageURL = fileId.thumbnailLink ?? fileId.iconLink
-            guard let url = imageURL else {
-                print("Ошибка: URL изображения отсутствует")
-                return
-            }
-            DispatchQueue.main.async {
-                self.getImage(imageView: imageView, url: url)
+        if let fileId = files.first {
+            var imageURL: String?
+            
+            if fileId.mimeType!.contains("image") {
+                imageURL = fileId.id
+                guard let url = imageURL else {
+                    print("Ошибка: URL изображения отсутствует")
+                    return
+                }
+                let data = try await self.getImageGoogleDrive(fileID: url)
+                DispatchQueue.main.async {
+                    if let imageView = imageView {
+                        imageView.image = UIImage(data: data)
+                    }
+                }
+            } else {
+                imageURL = fileId.thumbnailLink ?? fileId.iconLink
+                
+                guard let url = imageURL else {
+                    print("Ошибка: URL изображения отсутствует")
+                    return
+                }
+                do {
+                    let imageData = try await universalGetImage(stringURL: url)
+                    DispatchQueue.main.async {
+                        if let imageView = imageView {
+                            imageView.image = UIImage(data: imageData)
+                        }
+                    }
+                } catch {
+                    print("Ошибка загрузки изображения: \(error)")
+                }
             }
         }
     }
     
     func requestOneFileId(viewController: UIViewController, imageView: UIImageView) {
-//        GoogleRequest.shared.requestsGoogleOneFile(fileID: self.idFile) { [weak self] result in
-//                switch result {
-//                case .success(let fileId):
-//                    DispatchQueue.main.async {
-//                        self?.handleSuccessFiles([fileId], imageView: imageView, viewController: viewController)
-//                    }
-//                case .failure(let error):
-//                    print("Ошибка скачивания - \(error.localizedDescription)")
-//                }
-//            }
-        
         performRequest(
-                request: { GoogleRequest.shared.requestsGoogleOneFile(fileID: self.idFile, completion: $0) },
-                success: { [weak self] fileId in
-                    self?.handleSuccessFiles([fileId], imageView: imageView, viewController: viewController)
-                },
-                failure: { error in
-                    self.showErrorAlert(viewController: viewController, message: error)
+            request: { self.requestsGoogleOneFile(fileID: self.idFile, completion: $0) },
+            success: { fileId in
+                Task {
+                    do {
+                        try await self.handleSuccessFiles([fileId], imageView: imageView, viewController: viewController)
+                    } catch {
+                        print("Ошибка при обработке файлов: \(error)")
+                    }
                 }
-            )
+            },
+            failure: { error in
+                self.showErrorAlert(viewController: viewController, message: error)
+            }
+        )
     }
     
     func requestFolderFileId(completion: @escaping () -> ()) {
-//                GoogleRequest.shared.requestsGoogleFolderFile(idFile: self.idFile) { [weak self] result in
-//                    switch result {
-//                    case .success(let files):
-//                        DispatchQueue.main.async {
-//                            self?.handleSuccessFiles(files, imageView: nil, viewController: UIViewController())
-//                        }
-//                        completion()
-//                    case .failure(let error):
-//                        print("Ошибка скачивания - \(error.localizedDescription)")
-//                    }
-//                }
-        
         performRequest(
-                request: { GoogleRequest.shared.requestsGoogleFolderFile(idFile: self.idFile, completion: $0) },
-                success: { [weak self] files in
-                    self?.handleSuccessFiles(files, imageView: nil, viewController: UIViewController())
-                    completion()
-                },
-                failure: { error in
-                    print("Ошибка скачивания - \(error.localizedDescription)")
+            request: { self.requestsGoogleFolderFile(idFile: self.idFile, completion: $0) },
+            success: { files in
+                Task {
+                    do {
+                        try await self.handleSuccessFiles(files, imageView: nil, viewController: UIViewController())
+                        completion()
+                    } catch {
+                        print("Ошибка при обработке файлов: \(error)")
+                    }
                 }
-            )
+            },
+            failure: { error in
+                print("Ошибка скачивания - \(error.localizedDescription)")
+            }
+        )
     }
     
     func renameActionRightBarButton(navigationItem: UINavigationItem, viewController: UIViewController) {
@@ -108,32 +117,17 @@ class OpenFileViewModel: ShowAlert, PerformRequest {
                 guard let self = self else { return }
                 
                 performRequest(
-                        request: { GoogleRequest.shared.requestsUpdateNameGoogleFile(fileID: self.idFile, newName: newName, completion: $0) },
-                        success: { [weak self] files in
-                            self?.nameFile = newName
-                            navigationItem.title = newName
-                            self?.showSuccessAlertInform(viewController: viewController, message: AlertTexts.successRename)
-                        },
-                        failure: { error in
-                            self.showErrorAlert(viewController: viewController, message: error)
-                            print("Ошибка переименования - \(error.localizedDescription)")
-                        }
-                    )
-                
-                
-//                GoogleRequest.shared.requestsUpdateNameGoogleFile(fileID: self.idFile, newName: newName) { [weak self] result in
-//                    switch result {
-//                    case .success:
-//                        DispatchQueue.main.async {
-//                            self?.nameFile = newName
-//                            navigationItem.title = newName
-//                            self?.showSuccessAlertInform(viewController: viewController, message: AlertTexts.successRename)
-//                        }
-//                    case .failure(let error):
-//                        self?.showErrorAlert(viewController: viewController, message: error)
-//                        print("Ошибка переименования - \(error.localizedDescription)")
-//                    }
-//                }
+                    request: { self.requestsUpdateNameGoogleFile(fileID: self.idFile, newName: newName, completion: $0) },
+                    success: { [weak self] files in
+                        self?.nameFile = newName
+                        navigationItem.title = newName
+                        self?.showSuccessAlertInform(viewController: viewController, message: AlertTexts.successRename)
+                    },
+                    failure: { error in
+                        self.showErrorAlert(viewController: viewController, message: error)
+                        print("Ошибка переименования - \(error.localizedDescription)")
+                    }
+                )
             }
         }
     }
@@ -150,39 +144,18 @@ class OpenFileViewModel: ShowAlert, PerformRequest {
             guard let self = self else { return }
             
             performRequest(
-                    request: { GoogleRequest.shared.requestsDeleteGoogleFile(fileID: self.idFile, completion: $0) },
-                    success: { [weak self] _ in
-                        self?.showSuccessAlertAction(viewController: viewController, message: AlertTexts.successDelete)
-                        {_ in 
-                            viewController.navigationController?.popViewController(animated: true)
-                        }
-                    },
-                    failure: { error in
-                        self.showErrorAlert(viewController: viewController, message: error)
-                        print("Ошибка переименования - \(error.localizedDescription)")
+                request: { self.requestsDeleteGoogleFile(fileID: self.idFile, completion: $0) },
+                success: { [weak self] _ in
+                    self?.showSuccessAlertAction(viewController: viewController, message: AlertTexts.successDelete)
+                    {_ in 
+                        viewController.navigationController?.popViewController(animated: true)
                     }
-                )
-            
-            
-//            GoogleRequest.shared.requestsDeleteGoogleFile(fileID: self.idFile) { result in
-//                switch result {
-//                case .success:
-//                    DispatchQueue.main.async {
-//                        self.showSuccessAlertAction(viewController: viewController, message: AlertTexts.successDelete, buttonAction: AlertTexts.close)
-//                        {[weak self] _ in
-//                            if let navigationController = viewController.navigationController {
-//                                navigationController.popViewController(animated: true)
-//                            } else {
-//                                viewController.dismiss(animated: true, completion: nil)
-//                            }
-//                        }
-//                    }
-//                case .failure(let error):
-//                    DispatchQueue.main.async {
-//                        self.showErrorAlert(viewController: viewController, message: error)
-//                    }
-//                }
-//            }
+                },
+                failure: { error in
+                    self.showErrorAlert(viewController: viewController, message: error)
+                    print("Ошибка переименования - \(error.localizedDescription)")
+                }
+            )
         }
     }
     
@@ -191,7 +164,6 @@ class OpenFileViewModel: ShowAlert, PerformRequest {
             print("webContentLink не установлен")
             return
         }
-        
         let items: [Any] = [webContentLink]
         
         let avc = UIActivityViewController(activityItems: items, applicationActivities: nil)

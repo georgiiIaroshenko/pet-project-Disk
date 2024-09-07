@@ -49,7 +49,6 @@ class OpenFileViewController: UIViewController, Storyboardable, ActivityViewFull
             setupShareButton()
             setupRightBarButtonRename()
             setupDeleteButton()
-            hideActivityIndicator()
         }
     }
     
@@ -155,7 +154,6 @@ extension OpenFileViewController: UICollectionViewDataSource{
         guard let viewModel = openFileViewModel else {
                return UICollectionViewCell()
            }
-           
            let cellIdentifier: String
            switch viewModel.mimeType {
            case MIMEType.folder, MIMEType.snapshot:
@@ -172,7 +170,6 @@ extension OpenFileViewController: UICollectionViewDataSource{
            } else if let imageCell = cell as? OpenFileCollectionViewImageCell {
                viewModel.requestOneFileId(viewController: self, imageView: imageCell.imageView)
            }
-           
            return cell
     }
 }

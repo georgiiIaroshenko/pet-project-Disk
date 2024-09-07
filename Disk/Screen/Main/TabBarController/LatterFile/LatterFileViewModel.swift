@@ -1,7 +1,7 @@
 
 import UIKit
 
-class LatterFileViewModel {
+class LatterFileViewModel: GoogleDriveRequest {
     
     var googleUser: GoogleUserStruct?
     var file: [Files]?
@@ -14,7 +14,7 @@ class LatterFileViewModel {
     
     func requestAllFile(collection: UICollectionView,complited:@escaping () -> ()) {
         
-        GoogleRequest.shared.requestsAllFile(nameStorage: .google) { result in
+        requestsAllFile(nameStorage: .google) { result in
             switch result {
             case .success(let newFile):
                 self.file = newFile
