@@ -44,7 +44,7 @@ class LoginViewModel: ShowAlert {
     func actionEnterButtom(viewController: UIViewController, textFieldLogin: String, textFieldPassword: String) {
         AuthFirebase.shared.signIn(email: textFieldLogin, password: textFieldPassword) { result in
             switch result {
-            case .success(let user):
+            case .success(_):
                 self.coordinator.finish()
                 print("")
             case .failure(let error):

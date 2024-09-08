@@ -2,10 +2,10 @@ import Foundation
 
 struct UserAbout: Decodable {
     let storageQuota: StorageQuota
-    let user: UserGL
+    let user: UserGoogle
 }
 
-struct UserGL: Decodable {
+struct UserGoogle: Decodable {
     let displayName: String
     let kind: String
     let me: Bool

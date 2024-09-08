@@ -83,6 +83,7 @@
 		66F61E0E2C4316F0009BA587 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66F61E0D2C4316F0009BA587 /* Main.storyboard */; };
 		66F830CC2C70C47F0086AF56 /* MenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F830CB2C70C47F0086AF56 /* MenuCollectionViewCell.swift */; };
 		66F830CE2C70C4950086AF56 /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F830CD2C70C4950086AF56 /* MainCollectionViewCell.swift */; };
+		66FF134D2C8E257500944C08 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 66FF134C2C8E257500944C08 /* DGCharts */; };
 		742FDCFD6EF7F73917B49F99 /* Pods_Disk_DiskUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2114CAA2CEAB270AE63F239 /* Pods_Disk_DiskUITests.framework */; };
 		7B0D7227E4905DA1E96D7B5C /* Pods_Disk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 165AEE82351F0C5CB073252A /* Pods_Disk.framework */; };
 		F3CACDC81B52085CDCE1790E /* Pods_DiskTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B842FE7A433C317A1071028 /* Pods_DiskTests.framework */; };
@@ -236,6 +237,7 @@
 			files = (
 				66EE5D052C84D19F000F8346 /* GoogleAPIClientForREST_Drive in Frameworks */,
 				66F61E052C4311C0009BA587 /* FirebaseDatabaseSwift in Frameworks */,
+				66FF134D2C8E257500944C08 /* DGCharts in Frameworks */,
 				66F61E032C4311C0009BA587 /* FirebaseDatabase in Frameworks */,
 				7B0D7227E4905DA1E96D7B5C /* Pods_Disk.framework in Frameworks */,
 				66F61E072C4311C0009BA587 /* FirebaseFirestore in Frameworks */,
@@ -658,6 +660,7 @@
 				66F61E0A2C4311C0009BA587 /* FirebaseStorage */,
 				66EE5D042C84D19F000F8346 /* GoogleAPIClientForREST_Drive */,
 				66EE5D062C84D19F000F8346 /* GoogleAPIClientForREST_DriveActivity */,
+				66FF134C2C8E257500944C08 /* DGCharts */,
 			);
 			productName = Disk;
 			productReference = 66528EA62C30938000806F28 /* Disk.app */;
@@ -739,6 +742,7 @@
 				66F61DFF2C4311C0009BA587 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				66F61E0C2C431253009BA587 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				66EE5D032C84D19F000F8346 /* XCRemoteSwiftPackageReference "google-api-objectivec-client-for-rest" */,
+				66FF134B2C8E257500944C08 /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = 66528EA72C30938000806F28 /* Products */;
 			projectDirPath = "";
@@ -1353,6 +1357,14 @@
 				minimumVersion = 7.1.0;
 			};
 		};
+		66FF134B2C8E257500944C08 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1395,6 +1407,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 66F61DFF2C4311C0009BA587 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		66FF134C2C8E257500944C08 /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 66FF134B2C8E257500944C08 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

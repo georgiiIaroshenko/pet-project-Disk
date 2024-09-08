@@ -2,10 +2,11 @@
 import UIKit
 import GoogleSignIn
 import FirebaseAuth
+import Charts
 
 class ProfileViewModel: ShowAlert, GoogleDriveRequest, ImageRequestProtocol {
-    var googleUser: GoogleUserStruct = GoogleUserStruct(id: "", repositories: Storage(nameStorage: "", accessToken: "", refreshToken: "", idAccessToken: ""))
-    var fileUser: UserGL?
+//    var googleUser: GoogleUserStruct?
+    var fileUser: UserAbout?
     
     var coordinator: ProfileCoordinator?
     
@@ -13,15 +14,50 @@ class ProfileViewModel: ShowAlert, GoogleDriveRequest, ImageRequestProtocol {
         self.coordinator = coordinator
     }
     
-    func requestAbout(imageViewGoogleUser: UIImageView) {
+    private func fullSpace() -> Double {
+        let fullSize = Double((fileUser?.storageQuota.limit)!)!
+//        let gdfg = Double((fileUser?.storageQuota.usage)!)!
+//        let fullSizeToString = String(describing: fullSize)
+//        let fullSizeTo = String(describing: gdfg)
+//        let fdg = ConvertWeight(sizeString: fullSizeToString).convertWeight()
+//        print("Размер хранилища --- \(fdg) ---")
+        return fullSize
+    }
+    
+    func fullSize() -> String {
+        let fullSize = String(fullSpace())
+        let fdg = ConvertWeight(sizeString: fullSize).convertWeight()
+        return fdg
+    }
+    
+    func freeSpace() -> Double {
+        let fullSize = self.fullSpace()
+        let usedSpace = Double((fileUser?.storageQuota.usage)!)!
+        let freeSpace = fullSize - usedSpace
+        let freeSpaceEnd = freeSpace / (fullSize / 100)
+        print(freeSpaceEnd)
+        return freeSpaceEnd
+    }
+    
+    func usedSpace() -> Double {
+        let fullSize = self.fullSpace()
+        let usedSpace = Double((fileUser?.storageQuota.usage)!)!
+        let sfsdf = usedSpace / (fullSize / 100)
+        print(sfsdf)
+        return sfsdf
         
-        requestsGoogleAbout() { result in
+    }
+    
+    func requestAbout(imageViewGoogleUser: UIImageView, complited:@escaping () -> ()) {
+        requestsGoogleAbout() { [weak self]  result in
+            guard let strongSelf = self else { return }
             switch result {
             case .success(let resultAbout):
-                self.fileUser = resultAbout.user
+                strongSelf.fileUser = resultAbout
+                complited()
                 Task {
                     do {
-                        let data = try await self.universalGetImage(stringURL: self.fileUser?.photoLink ?? "")
+                        let data = try await strongSelf.universalGetImage(stringURL: resultAbout.user.photoLink)
                         DispatchQueue.main.async {
                             imageViewGoogleUser.image = UIImage(data: data)
                         }
@@ -33,6 +69,7 @@ class ProfileViewModel: ShowAlert, GoogleDriveRequest, ImageRequestProtocol {
                 }
             case .failure(let errorAbout):
                 print("errorAbout: \(errorAbout)")
+                complited()
             }
         }
     }
