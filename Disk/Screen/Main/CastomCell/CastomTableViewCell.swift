@@ -17,6 +17,13 @@ class CastomTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         optionImage.contentMode = .center
+        shadows()
+    }
+    
+    func shadows() {
+        weightDataTimeLabel.applyShadow()
+        nameLabel.applyShadow()
+        optionImage.applyShadow()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

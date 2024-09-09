@@ -24,13 +24,13 @@ class OpenFileCollectionViewImageCell: UICollectionViewCell {
     func setup() {
         self.contentView.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        
-        NSLayoutConstraint.activate([
-                    imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-                    imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-                    imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-                    imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-                ])
+
+            imageView.contentMode = .scaleAspectFit
+
+                    NSLayoutConstraint.activate([
+                        imageView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+                        imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+                        imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -100),
+                    ])
     }
 }

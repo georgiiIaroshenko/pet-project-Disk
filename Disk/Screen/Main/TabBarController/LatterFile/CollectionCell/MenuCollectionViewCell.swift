@@ -15,6 +15,7 @@ class MenuCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         setupLabel()
         setupConstraints()
+        nameServiceLabel.applyShadow()
     }
     
     required init?(coder: NSCoder) {

@@ -29,7 +29,7 @@ class TabBarController: UITabBarController {
     
     func settingTabBar() {
         
-        tabBar.backgroundColor = .gray
+        tabBar.backgroundColor = .white
         
     }
 }

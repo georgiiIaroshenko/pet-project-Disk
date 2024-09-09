@@ -26,7 +26,7 @@ class MainCollectionViewCell: UICollectionViewCell, ImageRequestProtocol {
         self.contentView.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = .black
+        tableView.backgroundColor = .white
         tableView.translatesAutoresizingMaskIntoConstraints = false
         let nib = UINib(nibName: "CastomTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "CastomTableViewCell")

@@ -19,7 +19,7 @@ class OpenFileCollectionViewFolderCell: UICollectionViewCell, ImageRequestProtoc
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = .black
+        tableView.backgroundColor = .white
 
         let nib = UINib(nibName: "CastomTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "CastomTableViewCell")

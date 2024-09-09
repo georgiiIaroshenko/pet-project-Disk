@@ -125,7 +125,7 @@ class OpenFileViewController: UIViewController, Storyboardable, ActivityViewFull
         view.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.isScrollEnabled = false
-        collectionView.backgroundColor = .black
+        collectionView.backgroundColor = .white
         collectionView.register(OpenFileCollectionViewImageCell.self, forCellWithReuseIdentifier: "\(OpenFileCollectionViewImageCell.self)")
         collectionView.register(OpenFileCollectionViewFolderCell.self, forCellWithReuseIdentifier: "\(OpenFileCollectionViewFolderCell.self)")
         

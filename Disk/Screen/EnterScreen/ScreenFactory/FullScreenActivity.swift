@@ -13,7 +13,7 @@ class ActivityFactory {
     
     private let activityIndicator: UIActivityIndicatorView = {
         let ai = UIActivityIndicatorView(style: .medium) 
-        ai.backgroundColor = .gray
+        ai.backgroundColor = .white
         ai.translatesAutoresizingMaskIntoConstraints = false
         ai.hidesWhenStopped = true
         return ai

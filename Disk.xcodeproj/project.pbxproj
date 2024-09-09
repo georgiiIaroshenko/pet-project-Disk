@@ -59,6 +59,8 @@
 		66A6F4E32C8A12030011F2C3 /* MainEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A6F4E22C8A12030011F2C3 /* MainEnum.swift */; };
 		66A6F4E52C8A4FBD0011F2C3 /* PerformRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A6F4E42C8A4FBD0011F2C3 /* PerformRequest.swift */; };
 		66C72D532C693F870070DBEA /* OpenFileCollectionViewImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C72D522C693F870070DBEA /* OpenFileCollectionViewImageCell.swift */; };
+		66C7FAED2C8F940A00ACEC64 /* MenuPieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C7FAEC2C8F940A00ACEC64 /* MenuPieCollectionViewCell.swift */; };
+		66C7FAEF2C8F942D00ACEC64 /* PieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C7FAEE2C8F942D00ACEC64 /* PieCollectionViewCell.swift */; };
 		66CD8E182C3AC11B00207707 /* LocalizableOnboardingScreen.strings in Resources */ = {isa = PBXBuildFile; fileRef = 66CD8E162C3AC11B00207707 /* LocalizableOnboardingScreen.strings */; };
 		66CD8E1C2C3AC43400207707 /* LocalizableLoginScreen.strings in Resources */ = {isa = PBXBuildFile; fileRef = 66CD8E1A2C3AC43400207707 /* LocalizableLoginScreen.strings */; };
 		66CD8E1F2C3AC46500207707 /* LocalizableProfileScreen.strings in Resources */ = {isa = PBXBuildFile; fileRef = 66CD8E1D2C3AC46500207707 /* LocalizableProfileScreen.strings */; };
@@ -84,6 +86,7 @@
 		66F830CC2C70C47F0086AF56 /* MenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F830CB2C70C47F0086AF56 /* MenuCollectionViewCell.swift */; };
 		66F830CE2C70C4950086AF56 /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F830CD2C70C4950086AF56 /* MainCollectionViewCell.swift */; };
 		66FF134D2C8E257500944C08 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 66FF134C2C8E257500944C08 /* DGCharts */; };
+		66FF134F2C8F3D6000944C08 /* ShadowProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66FF134E2C8F3D6000944C08 /* ShadowProtocol.swift */; };
 		742FDCFD6EF7F73917B49F99 /* Pods_Disk_DiskUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2114CAA2CEAB270AE63F239 /* Pods_Disk_DiskUITests.framework */; };
 		7B0D7227E4905DA1E96D7B5C /* Pods_Disk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 165AEE82351F0C5CB073252A /* Pods_Disk.framework */; };
 		F3CACDC81B52085CDCE1790E /* Pods_DiskTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B842FE7A433C317A1071028 /* Pods_DiskTests.framework */; };
@@ -207,6 +210,8 @@
 		66A6F4E22C8A12030011F2C3 /* MainEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEnum.swift; sourceTree = "<group>"; };
 		66A6F4E42C8A4FBD0011F2C3 /* PerformRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformRequest.swift; sourceTree = "<group>"; };
 		66C72D522C693F870070DBEA /* OpenFileCollectionViewImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFileCollectionViewImageCell.swift; sourceTree = "<group>"; };
+		66C7FAEC2C8F940A00ACEC64 /* MenuPieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPieCollectionViewCell.swift; sourceTree = "<group>"; };
+		66C7FAEE2C8F942D00ACEC64 /* PieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieCollectionViewCell.swift; sourceTree = "<group>"; };
 		66CD8E152C3AC04E00207707 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		66CD8E172C3AC11B00207707 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableOnboardingScreen.strings; sourceTree = "<group>"; };
 		66CD8E1B2C3AC43400207707 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableLoginScreen.strings; sourceTree = "<group>"; };
@@ -224,6 +229,7 @@
 		66F61E0D2C4316F0009BA587 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		66F830CB2C70C47F0086AF56 /* MenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCollectionViewCell.swift; sourceTree = "<group>"; };
 		66F830CD2C70C4950086AF56 /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
+		66FF134E2C8F3D6000944C08 /* ShadowProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowProtocol.swift; sourceTree = "<group>"; };
 		AFD130779C1F810FF54B74A6 /* Pods-DiskTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiskTests.release.xcconfig"; path = "Target Support Files/Pods-DiskTests/Pods-DiskTests.release.xcconfig"; sourceTree = "<group>"; };
 		E5DE2C993BE6E3F703D397DC /* Pods-Disk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disk.debug.xcconfig"; path = "Target Support Files/Pods-Disk/Pods-Disk.debug.xcconfig"; sourceTree = "<group>"; };
 		F2114CAA2CEAB270AE63F239 /* Pods_Disk_DiskUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Disk_DiskUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -327,6 +333,7 @@
 		6618C62C2C355FCF00909E4F /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				66C7FAEB2C8F93D400ACEC64 /* CollectionCell */,
 				6618C62F2C35600F00909E4F /* ProfileViewController.swift */,
 				6618C6352C35605800909E4F /* ProfileViewModel.swift */,
 				6618C63B2C3560BE00909E4F /* ProfileModel.swift */,
@@ -496,6 +503,7 @@
 				66A514592C8889C1009F66A7 /* CreatePlaceholderProtocol.swift */,
 				666F56EA2C8B383400ED0ADE /* AlertProtocol.swift */,
 				666F56EC2C8B388300ED0ADE /* ActivityProtocol.swift */,
+				66FF134E2C8F3D6000944C08 /* ShadowProtocol.swift */,
 			);
 			name = Protocol;
 			sourceTree = "<group>";
@@ -567,6 +575,15 @@
 				66A5145C2C88B311009F66A7 /* LocalizableLoginScreenEnum.swift */,
 			);
 			path = LocalizableLoginScreen;
+			sourceTree = "<group>";
+		};
+		66C7FAEB2C8F93D400ACEC64 /* CollectionCell */ = {
+			isa = PBXGroup;
+			children = (
+				66C7FAEC2C8F940A00ACEC64 /* MenuPieCollectionViewCell.swift */,
+				66C7FAEE2C8F942D00ACEC64 /* PieCollectionViewCell.swift */,
+			);
+			path = CollectionCell;
 			sourceTree = "<group>";
 		};
 		66CD8E132C3ABFEA00207707 /* Localization */ = {
@@ -900,6 +917,7 @@
 				6618C63E2C3560CF00909E4F /* LatterFileModel.swift in Sources */,
 				666F56F32C8CA26B00ED0ADE /* TokenServiceProtocol.swift in Sources */,
 				6618C6362C35605800909E4F /* ProfileViewModel.swift in Sources */,
+				66C7FAEF2C8F942D00ACEC64 /* PieCollectionViewCell.swift in Sources */,
 				66528EE32C30947100806F28 /* Storyboardable.swift in Sources */,
 				6639DED52C4D10950073503F /* CastomTableViewCell.swift in Sources */,
 				66CF2D4A2C52ACA40083355A /* GoogleModel.swift in Sources */,
@@ -934,6 +952,7 @@
 				66528EE62C3094C000806F28 /* Coordinator.swift in Sources */,
 				66528EEC2C30951800806F28 /* OnboardingModel.swift in Sources */,
 				66EE5D022C7BBDCF000F8346 /* FullScreenActivity.swift in Sources */,
+				66FF134F2C8F3D6000944C08 /* ShadowProtocol.swift in Sources */,
 				66A5145D2C88B311009F66A7 /* LocalizableLoginScreenEnum.swift in Sources */,
 				666FFB0B2C5F936100AA2E2A /* OpenFileViewController.swift in Sources */,
 				666FFB0D2C5F937D00AA2E2A /* OpenFileViewModel.swift in Sources */,
@@ -943,6 +962,7 @@
 				66D6A7B12C62A56000876FE7 /* OnboardingCoordinator.swift in Sources */,
 				66D6A7B62C63D18A00876FE7 /* TabBarController.swift in Sources */,
 				66D5A2762C79044E006E085B /* OpenFileCollectionViewFolderCell.swift in Sources */,
+				66C7FAED2C8F940A00ACEC64 /* MenuPieCollectionViewCell.swift in Sources */,
 				666FFB0F2C5F938E00AA2E2A /* OpenFileModel.swift in Sources */,
 				66D6A7BC2C63D35600876FE7 /* AllFileCoordinator.swift in Sources */,
 				6618C6302C35600F00909E4F /* ProfileViewController.swift in Sources */,

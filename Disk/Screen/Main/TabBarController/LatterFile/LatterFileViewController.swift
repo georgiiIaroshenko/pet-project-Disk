@@ -13,8 +13,8 @@ class LatterFileViewController: UIViewController, Storyboardable, ShowAlert, Act
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .lightGray
-        navigationController?.navigationBar.tintColor = .gray
+        view.backgroundColor = .white
+        navigationController?.navigationBar.tintColor = .black
         navigationItem.title = "Последнее"
         setupMainColletionView()
         setupMenuColletionView()
@@ -34,11 +34,15 @@ class LatterFileViewController: UIViewController, Storyboardable, ShowAlert, Act
             }
         }
     }
+    func shadows () {
+        menuCollectionView.applyShadow()
+        mainCollectionView.applyShadow()
 
+    }
     //MARK: - Setup Menu CollectionView
     func setupMenuColletionView() {
         view.addSubview(menuCollectionView)
-        menuCollectionView.backgroundColor = .red
+        menuCollectionView.backgroundColor = .white
         menuCollectionView.translatesAutoresizingMaskIntoConstraints = false
         menuCollectionView.dataSource = self
         menuCollectionView.delegate = self
@@ -47,7 +51,7 @@ class LatterFileViewController: UIViewController, Storyboardable, ShowAlert, Act
     //MARK: - Setup Main CollectionView
     func setupMainColletionView() {
         view.addSubview(mainCollectionView)
-        mainCollectionView.backgroundColor = .blue
+        mainCollectionView.backgroundColor = .white
         mainCollectionView.dataSource = self
         mainCollectionView.delegate = self
         mainCollectionView.translatesAutoresizingMaskIntoConstraints = false

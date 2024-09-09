@@ -20,3 +20,11 @@ struct StorageQuota: Decodable {
     let usageInDrive: String
     let usageInDriveTrash: String
 }
+
+struct PieMassiveViewCell: Decodable {
+    let usedSizeDouble: Double
+    let usedSizeString: String
+    let freeSizeDouble: Double
+    let freeSizeString: String
+    let fullSizeString: String
+}

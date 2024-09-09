@@ -30,7 +30,7 @@ class ChangeDate {
 class ConvertWeight {
     
     private let sizeString: String
-    private static let units: [String] = ["б", "кб", "мб", "г", "тб", "PB", "EB", "ZB", "YB"]
+    private static let units: [String] = ["б", "кб", "мб", "Гб", "Тб", "PB", "EB", "ZB", "YB"]
 
     init(sizeString: String) {
         self.sizeString = sizeString
