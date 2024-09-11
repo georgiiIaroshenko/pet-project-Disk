@@ -15,7 +15,7 @@ class LatterFileViewController: UIViewController, Storyboardable, ShowAlert, Act
         super.viewDidLoad()
         view.backgroundColor = .white
         navigationController?.navigationBar.tintColor = .black
-        navigationItem.title = "Последнее"
+        navigationItem.title = "Все файлы"
         setupMainColletionView()
         setupMenuColletionView()
         setupConstraints()

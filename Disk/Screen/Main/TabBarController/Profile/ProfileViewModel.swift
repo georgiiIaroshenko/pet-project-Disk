@@ -6,22 +6,23 @@ import FirebaseAuth
 class ProfileViewModel: ShowAlert, GoogleDriveRequest, ImageRequestProtocol {
     private var fileUser: UserAbout?
     private var coordinator: ProfileCoordinator?
-    var file: [Files]?
+    var file: [FilesAbout]?
     
     init(coordinator: ProfileCoordinator?) {
         self.coordinator = coordinator
     }
     
     func requestAbout(imageViewGoogleUser: UIImageView, complited:@escaping () -> ()) {
-        requestsGoogleAbout { [weak self] result in
+        requestsGoogleAbout(nameStorage: .google) { [weak self] result in
             guard let strongSelf = self else { return }
             switch result {
             case .success(let resultAbout):
-                strongSelf.fileUser = resultAbout
-                complited()
+                strongSelf.file = resultAbout
+                strongSelf.fileUser = resultAbout.first?.userAbout
                 
                 Task {
-                    await strongSelf.loadUserImage(urlString: resultAbout.user.photoLink, imageView: imageViewGoogleUser)
+                    await strongSelf.loadUserImage(urlString: resultAbout.first?.userAbout.user.photoLink, imageView: imageViewGoogleUser)
+                    complited()
                 }
             case .failure(let errorAbout):
                 print("errorAbout: \(errorAbout)")
@@ -93,7 +94,7 @@ extension ProfileViewModel {
 
     func fullSize() -> String {
         let convertedFullSize = ConvertWeight(sizeString: String(fullSpace())).convertWeight()
-        return "Размер хранилища\n" + convertedFullSize
+        return "Размер хранилища\n" + "\(convertedFullSize)\n" + (file?.first?.nameStorage ?? "")
     }
     
     func freeSpace() -> Double {
@@ -116,11 +117,11 @@ extension ProfileViewModel {
     }
     
     func nameMenuCell(indexPath: IndexPath) -> String {
-        let nameService = file![indexPath.item].name
+        let nameService = file?[indexPath.item].nameStorage ?? "dsf"
         return nameService
     }
     
     func massiveStorage() -> Int {
-        return file?.count ?? 0
+        return file?.count ?? 1
     }
 }

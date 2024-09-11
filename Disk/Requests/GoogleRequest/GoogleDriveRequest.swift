@@ -4,11 +4,11 @@ import UIKit
 
 protocol GoogleDriveRequest: NetworkRequest, TokenService {
     func requestsAllFile(nameStorage: NameStorage, completion: @escaping (Result<[Files], NetworkError>) -> Void)
-    func requestsGoogleFolderFile(idFile: String, completion: @escaping (Result<[GoogleFile], NetworkError>) -> Void)
-    func requestsGoogleAbout(completion: @escaping (Result<UserAbout, NetworkError>) -> Void)
-    func requestsGoogleOneFile(fileID: String, completion: @escaping (Result<GoogleFile, NetworkError>) -> Void)
-    func requestsUpdateNameGoogleFile(fileID: String, newName: String, completion: @escaping (Result<Void, NetworkError>) -> Void)
-    func requestsDeleteGoogleFile(fileID: String, completion: @escaping (Result<Void, NetworkError>) -> Void)
+    func requestsGoogleFolderFile(nameStorage: NameStorage, idFile: String, completion: @escaping (Result<[GoogleFile], NetworkError>) -> Void)
+    func requestsGoogleAbout(nameStorage: NameStorage, completion: @escaping (Result<[FilesAbout], NetworkError>) -> Void)
+    func requestsGoogleOneFile(nameStorage: NameStorage, fileID: String, completion: @escaping (Result<GoogleFile, NetworkError>) -> Void)
+    func requestsUpdateNameGoogleFile(nameStorage: NameStorage, fileID: String, newName: String, completion: @escaping (Result<Void, NetworkError>) -> Void)
+    func requestsDeleteGoogleFile(nameStorage: NameStorage, fileID: String, completion: @escaping (Result<Void, NetworkError>) -> Void)
 }
 
 extension GoogleDriveRequest {
@@ -46,9 +46,9 @@ extension GoogleDriveRequest {
         }
     }
     
-    func requestsGoogleFolderFile(idFile: String, completion: @escaping (Result<[GoogleFile], NetworkError>) -> Void) {
+    func requestsGoogleFolderFile(nameStorage: NameStorage, idFile: String, completion: @escaping (Result<[GoogleFile], NetworkError>) -> Void) {
         googleCheckAndUpdateToken { _ in
-            DatabaseService.shared.getToken(nameStorage: .google, tokenType: .accessToken) { result in
+            DatabaseService.shared.getToken(nameStorage: nameStorage, tokenType: .accessToken) { result in
                 switch result {
                 case .success(let accessToken):
                     var urlComponents = URLComponents(string: "https://www.googleapis.com/drive/v3/files")
@@ -80,9 +80,9 @@ extension GoogleDriveRequest {
         }
     }
 
-    func requestsGoogleAbout(completion: @escaping (Result<UserAbout, NetworkError>) -> Void) {
+    func requestsGoogleAbout(nameStorage: NameStorage, completion: @escaping (Result<[FilesAbout], NetworkError>) -> Void) {
         googleCheckAndUpdateToken {  _ in
-            DatabaseService.shared.getToken(nameStorage: .google, tokenType: .accessToken) { result in
+            DatabaseService.shared.getToken(nameStorage: nameStorage, tokenType: .accessToken) { result in
                 switch result {
                 case .success(let accessToken):
                     var urlComponents = URLComponents(string: "https://www.googleapis.com/drive/v3/about")
@@ -95,7 +95,16 @@ extension GoogleDriveRequest {
                                             return
                                         }
                     
-                    self.performRequest(url: url, httpMethod: "GET", accessToken: accessToken, httpBody: nil, completion: completion)
+                    self.performRequest(url: url, httpMethod: "GET", accessToken: accessToken, httpBody: nil) { (result: Result<UserAbout, NetworkError>) in
+                        switch result {
+                        case .success(let decodedObject):
+                            let file = [FilesAbout(nameStorage: nameStorage.rawValue, userAbout: decodedObject)]
+                            print("Получил все данные!")
+                            completion(.success(file))
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
                     print("Получил данные профиля")
                 case .failure(let error):
                     print("Ошибка базы данных: \(error.localizedDescription)")
@@ -105,9 +114,9 @@ extension GoogleDriveRequest {
         }
     }
 
-    func requestsGoogleOneFile(fileID: String, completion: @escaping (Result<GoogleFile, NetworkError>) -> Void) {
+    func requestsGoogleOneFile(nameStorage: NameStorage, fileID: String, completion: @escaping (Result<GoogleFile, NetworkError>) -> Void) {
         googleCheckAndUpdateToken { _ in
-            DatabaseService.shared.getToken(nameStorage: .google, tokenType: .accessToken) { result in
+            DatabaseService.shared.getToken(nameStorage: nameStorage, tokenType: .accessToken) { result in
                 switch result {
                 case .success(let accessToken):
                     var urlComponents = URLComponents(string: "https://www.googleapis.com/drive/v3/files/\(fileID)")
@@ -132,9 +141,9 @@ extension GoogleDriveRequest {
         }
     }
     
-    func requestsUpdateNameGoogleFile(fileID: String, newName: String, completion: @escaping (Result<Void, NetworkError>) -> Void) {
+    func requestsUpdateNameGoogleFile(nameStorage: NameStorage, fileID: String, newName: String, completion: @escaping (Result<Void, NetworkError>) -> Void) {
         googleCheckAndUpdateToken { _ in
-            DatabaseService.shared.getToken(nameStorage: .google, tokenType: .accessToken) { result in
+            DatabaseService.shared.getToken(nameStorage: nameStorage, tokenType: .accessToken) { result in
                 switch result {
                 case .success(let accessToken):
                     let urlString = "https://www.googleapis.com/drive/v3/files/\(fileID)"
@@ -155,9 +164,9 @@ extension GoogleDriveRequest {
         }
     }
     
-    func requestsDeleteGoogleFile(fileID: String, completion: @escaping (Result<Void, NetworkError>) -> Void) {
+    func requestsDeleteGoogleFile(nameStorage: NameStorage, fileID: String, completion: @escaping (Result<Void, NetworkError>) -> Void) {
         googleCheckAndUpdateToken { _ in
-            DatabaseService.shared.getToken(nameStorage: .google, tokenType: .accessToken) { result in
+            DatabaseService.shared.getToken(nameStorage: nameStorage, tokenType: .accessToken) { result in
                 switch result {
                 case .success(let accessToken):
                     let urlString = "https://www.googleapis.com/drive/v3/files/\(fileID)"

@@ -1,5 +1,10 @@
 import Foundation
 
+struct FilesAbout: Decodable {
+    let nameStorage: String
+    let userAbout: UserAbout
+}
+
 struct UserAbout: Decodable {
     let storageQuota: StorageQuota
     let user: UserGoogle

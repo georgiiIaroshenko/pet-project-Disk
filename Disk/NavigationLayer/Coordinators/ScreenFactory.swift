@@ -46,7 +46,7 @@ struct ScreenFactory {
             
             let latterFileNavigationController = UINavigationController()
             let latterFileCoordinator = LatterFileCoordinator(type: .latterFile, navicationController: latterFileNavigationController)
-            latterFileNavigationController.tabBarItem = UITabBarItem(title: "Последнее", image: UIImage(systemName: "doc.badge.arrow.up.fill"), tag: 1)
+            latterFileNavigationController.tabBarItem = UITabBarItem(title: "Все файлы", image: UIImage(systemName: "doc.badge.arrow.up.fill"), tag: 1)
             latterFileCoordinator.finishDelegate = finishDelegate
             latterFileCoordinator.start()
             

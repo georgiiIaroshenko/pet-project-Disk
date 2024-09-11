@@ -10,7 +10,7 @@ import DGCharts
 
 class PieCollectionViewCell: UICollectionViewCell, ImageRequestProtocol {
     
-    private var pieStructViewCell: PieMassiveViewCell = PieMassiveViewCell(usedSizeDouble: 5, usedSizeString: "", freeSizeDouble: 5, freeSizeString: "", fullSizeString: "")
+    private var pieStructViewCell: PieMassiveViewCell?
     private var pieChart = PieChartView()
 
     
@@ -18,13 +18,21 @@ class PieCollectionViewCell: UICollectionViewCell, ImageRequestProtocol {
         super.init(frame: frame)
         setupCharts()
         setupConstraints()
+        pieChart.applyShadow()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        pieStructViewCell = nil
+        updateChartData()
+    }
+    
     func setupCharts() {
+        contentView.backgroundColor = .white
         contentView.addSubview(pieChart)
         pieChart.translatesAutoresizingMaskIntoConstraints = false
         pieChart.holeColor = UIColor.clear
@@ -37,18 +45,18 @@ class PieCollectionViewCell: UICollectionViewCell, ImageRequestProtocol {
     
     func setup(pieMassiveViewCell: PieMassiveViewCell) {
         self.pieStructViewCell = pieMassiveViewCell
+        updateChartData()
     }
     
     // MARK: - Chart Methods
     
     func updateChartData() {
-        
-        let usedSpace = pieStructViewCell.usedSizeDouble
-        let freeSpace = pieStructViewCell.freeSizeDouble
+        let usedSpace = pieStructViewCell?.usedSizeDouble ?? 0
+        let freeSpace = pieStructViewCell?.freeSizeDouble ?? 0
         
         let dataEntries = [
-            PieChartDataEntry(value: usedSpace, label: pieStructViewCell.usedSizeString),
-            PieChartDataEntry(value: freeSpace, label: pieStructViewCell.freeSizeString)
+            PieChartDataEntry(value: usedSpace, label: pieStructViewCell?.usedSizeString),
+            PieChartDataEntry(value: freeSpace, label: pieStructViewCell?.freeSizeString)
         ]
         
         let dataSet = PieChartDataSet(entries: dataEntries, label: "")
@@ -61,7 +69,7 @@ class PieCollectionViewCell: UICollectionViewCell, ImageRequestProtocol {
         data.setValueFont(UIFont.systemFont(ofSize: 14, weight: .bold))
         
         pieChart.data = data
-        pieChart.centerAttributedText = createCenterText(fullSize: pieStructViewCell.fullSizeString)
+        pieChart.centerAttributedText = createCenterText(fullSize: pieStructViewCell?.fullSizeString)
         pieChart.animate(xAxisDuration: 1.5, yAxisDuration: 1.5, easingOption: .easeInCubic)
         pieChart.notifyDataSetChanged()
     }
@@ -70,7 +78,7 @@ class PieCollectionViewCell: UICollectionViewCell, ImageRequestProtocol {
     
     func setupConstraints() {
         pieChart.snp.makeConstraints { make in
-            make.edges.equalTo(350)
+            make.size.equalTo(350)
         }
     }
 }

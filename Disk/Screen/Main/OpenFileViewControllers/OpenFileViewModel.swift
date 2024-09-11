@@ -69,7 +69,7 @@ class OpenFileViewModel: ShowAlert, PerformRequest, MimeType, GoogleDriveRequest
     
     func requestOneFileId(viewController: UIViewController, imageView: UIImageView) {
         performRequest(
-            request: { self.requestsGoogleOneFile(fileID: self.idFile, completion: $0) },
+            request: { self.requestsGoogleOneFile(nameStorage: .google, fileID: self.idFile, completion: $0) },
             success: { fileId in
                 Task {
                     do {
@@ -87,7 +87,7 @@ class OpenFileViewModel: ShowAlert, PerformRequest, MimeType, GoogleDriveRequest
     
     func requestFolderFileId(completion: @escaping () -> ()) {
         performRequest(
-            request: { self.requestsGoogleFolderFile(idFile: self.idFile, completion: $0) },
+            request: { self.requestsGoogleFolderFile(nameStorage: .google, idFile: self.idFile, completion: $0) },
             success: { files in
                 Task {
                     do {
@@ -117,7 +117,7 @@ class OpenFileViewModel: ShowAlert, PerformRequest, MimeType, GoogleDriveRequest
                 guard let self = self else { return }
                 
                 performRequest(
-                    request: { self.requestsUpdateNameGoogleFile(fileID: self.idFile, newName: newName, completion: $0) },
+                    request: { self.requestsUpdateNameGoogleFile(nameStorage: .google, fileID: self.idFile, newName: newName, completion: $0) },
                     success: { [weak self] files in
                         self?.nameFile = newName
                         navigationItem.title = newName
@@ -144,7 +144,7 @@ class OpenFileViewModel: ShowAlert, PerformRequest, MimeType, GoogleDriveRequest
             guard let self = self else { return }
             
             performRequest(
-                request: { self.requestsDeleteGoogleFile(fileID: self.idFile, completion: $0) },
+                request: { self.requestsDeleteGoogleFile(nameStorage: .google, fileID: self.idFile, completion: $0) },
                 success: { [weak self] _ in
                     self?.showSuccessAlertAction(viewController: viewController, message: AlertTexts.successDelete)
                     {_ in 
