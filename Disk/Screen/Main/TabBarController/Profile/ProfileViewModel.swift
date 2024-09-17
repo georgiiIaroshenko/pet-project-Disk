@@ -38,7 +38,6 @@ class ProfileViewModel: ShowAlert, GoogleDriveRequest, ImageRequestProtocol {
                 }
                 return
             }
-            
             do {
                 let data = try await universalGetImage(stringURL: urlString)
                 DispatchQueue.main.async {
@@ -70,7 +69,11 @@ class ProfileViewModel: ShowAlert, GoogleDriveRequest, ImageRequestProtocol {
         }
     }
     func createPieMassiveViewCell() -> PieMassiveViewCell {
-        let pieMassive = PieMassiveViewCell(usedSizeDouble: usedSpace(), usedSizeString: usedSpaceString(), freeSizeDouble: freeSpace(), freeSizeString: freeSpaceString(), fullSizeString: fullSize())
+        let pieMassive = PieMassiveViewCell(usedSizeDouble: usedSpace(), 
+                                            usedSizeString: usedSpaceString(),
+                                            freeSizeDouble: freeSpace(),
+                                            freeSizeString: freeSpaceString(),
+                                            fullSizeString: fullSize())
         return pieMassive
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class OpenFileViewController: UIViewController, Storyboardable, ActivityViewFullScreen {
+class OpenFileViewController: UIViewController, Storyboardable, ActivityViewFullScreen, ShowAlert {
     
     var collectionView: UICollectionView!
     var shareButton: UIButton!
@@ -128,6 +128,7 @@ class OpenFileViewController: UIViewController, Storyboardable, ActivityViewFull
         collectionView.backgroundColor = .white
         collectionView.register(OpenFileCollectionViewImageCell.self, forCellWithReuseIdentifier: "\(OpenFileCollectionViewImageCell.self)")
         collectionView.register(OpenFileCollectionViewFolderCell.self, forCellWithReuseIdentifier: "\(OpenFileCollectionViewFolderCell.self)")
+        collectionView.register(OpenFileCollectionViewAudioCell.self, forCellWithReuseIdentifier: "\(OpenFileCollectionViewAudioCell.self)")
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -152,25 +153,45 @@ extension OpenFileViewController: UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let viewModel = openFileViewModel else {
-               return UICollectionViewCell()
-           }
-           let cellIdentifier: String
-           switch viewModel.mimeType {
-           case MIMEType.folder, MIMEType.snapshot:
-               cellIdentifier = "\(OpenFileCollectionViewFolderCell.self)"
-           default:
-               cellIdentifier = "\(OpenFileCollectionViewImageCell.self)"
-           }
-           
-           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath)
-           
-           if let folderCell = cell as? OpenFileCollectionViewFolderCell {
-               guard let file = viewModel.file else { return UICollectionViewCell() }
-               folderCell.setup(files: file, coordinator: viewModel.coordinator)
-           } else if let imageCell = cell as? OpenFileCollectionViewImageCell {
-               viewModel.requestOneFileId(viewController: self, imageView: imageCell.imageView)
-           }
-           return cell
+            return UICollectionViewCell()
+        }
+        let cellIdentifier: String
+        switch viewModel.mimeType {
+        case MIMEType.folder, MIMEType.snapshot:
+            cellIdentifier = "\(OpenFileCollectionViewFolderCell.self)"
+        case MIMEType.audio, MIMEType.audio1:
+            cellIdentifier = "\(OpenFileCollectionViewAudioCell.self)"
+        default:
+            cellIdentifier = "\(OpenFileCollectionViewImageCell.self)"
+        }
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath)
+        
+        if let folderCell = cell as? OpenFileCollectionViewFolderCell {
+            guard let file = viewModel.file else { return UICollectionViewCell() }
+            folderCell.setup(files: file, coordinator: viewModel.coordinator)
+        } else if let imageCell = cell as? OpenFileCollectionViewImageCell {
+            viewModel.requestImageFileId(viewController: self, imageView: imageCell.imageView)
+        } else if let audioCell = cell as? OpenFileCollectionViewAudioCell {
+            Task {
+                do {
+                    await viewModel.requestAudioFileId(viewController: self) { result in
+                        switch result {
+                        case .success(let data):
+                            audioCell.playAudio(fromData: data)
+                            DispatchQueue.main.async {
+                                self.hideActivityIndicator()
+                            }
+                        case .failure(let error):
+                            self.showErrorAlert(viewController: self, message: error)
+                        }
+                    }
+                } catch {
+                    self.showErrorAlert(viewController: self, message: error)
+                }
+            }
+        }
+        return cell
     }
 }
 

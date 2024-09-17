@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-class OpenFileViewModel: ShowAlert, PerformRequest, MimeType, GoogleDriveRequest, ImageRequestProtocol {
+class OpenFileViewModel: ShowAlert, PerformRequest, MimeType, GoogleDriveRequest, ImageRequestProtocol, ActivityViewFullScreen {
     
     var idFile: String
     var nameFile: String
@@ -27,7 +27,7 @@ class OpenFileViewModel: ShowAlert, PerformRequest, MimeType, GoogleDriveRequest
         self.webContentLink = webContentLink
     }
     
-    func handleSuccessFiles(_ files: [GoogleFile], imageView: UIImageView?, viewController: UIViewController) async throws {
+    func handleSuccessFiles(_ files: [GoogleFile], imageView: UIImageView?, viewController: UIViewController, completion: @escaping () -> ()) async throws {
         self.file?.removeAll()
         self.file = files
         
@@ -40,10 +40,11 @@ class OpenFileViewModel: ShowAlert, PerformRequest, MimeType, GoogleDriveRequest
                     print("Ошибка: URL изображения отсутствует")
                     return
                 }
-                let data = try await self.getImageGoogleDrive(fileID: url)
+                let data = try await self.getDataOneFileGoogleDrive(fileID: url)
                 DispatchQueue.main.async {
                     if let imageView = imageView {
                         imageView.image = UIImage(data: data)
+                        completion()
                     }
                 }
             } else {
@@ -58,6 +59,7 @@ class OpenFileViewModel: ShowAlert, PerformRequest, MimeType, GoogleDriveRequest
                     DispatchQueue.main.async {
                         if let imageView = imageView {
                             imageView.image = UIImage(data: imageData)
+                            completion()
                         }
                     }
                 } catch {
@@ -67,13 +69,66 @@ class OpenFileViewModel: ShowAlert, PerformRequest, MimeType, GoogleDriveRequest
         }
     }
     
-    func requestOneFileId(viewController: UIViewController, imageView: UIImageView) {
+    func requestAudioFileId(viewController: UIViewController, completion: @escaping (Result<Data, NetworkError>) -> Void) async {
+//        DispatchQueue.main.async {
+//            self.showActivityIndicator(view: viewController.view)
+//        }
         performRequest(
             request: { self.requestsGoogleOneFile(nameStorage: .google, fileID: self.idFile, completion: $0) },
             success: { fileId in
                 Task {
                     do {
-                        try await self.handleSuccessFiles([fileId], imageView: imageView, viewController: viewController)
+                        self.file?.removeAll()
+                        self.file?.append(fileId)
+                        
+//                        guard let fileId = self.file?.first else {
+//                            print("Ошибка: файл не найден")
+//                            DispatchQueue.main.async {
+//                                completion(.failure(.noData))
+//                            }
+//                            return
+//                        }
+                        guard let audioURL = fileId.id else {
+                            print("Ошибка: URL аудиофайла отсутствует")
+                            DispatchQueue.main.async {
+                                completion(.failure(.noData))
+                            }
+                            return
+                        }
+                        
+                        let data = try await self.getDataOneFileGoogleDrive(fileID: audioURL)
+                        DispatchQueue.main.async {
+                            completion(.success(data))
+                        }
+                    } catch {
+                        print("Ошибка при обработке файлов: \(error)")
+                        DispatchQueue.main.async {
+                            completion(.failure(.noData))
+                        }
+                    }
+                }
+            },
+            failure: { error in
+                self.showErrorAlert(viewController: viewController, message: error)
+                completion(.failure(.noData))
+            }
+        )
+    }
+    
+    func requestImageFileId(viewController: UIViewController, imageView: UIImageView) {
+        DispatchQueue.main.async {
+            self.showActivityIndicator(view: viewController.view)
+        }
+        performRequest(
+            request: { self.requestsGoogleOneFile(nameStorage: .google, fileID: self.idFile, completion: $0) },
+            success: { fileId in
+                Task {
+                    do {
+                        try await self.handleSuccessFiles([fileId], imageView: imageView, viewController: viewController) {
+                            DispatchQueue.main.async {
+                                self.hideActivityIndicator()
+                            }
+                        }
                     } catch {
                         print("Ошибка при обработке файлов: \(error)")
                     }
@@ -91,7 +146,9 @@ class OpenFileViewModel: ShowAlert, PerformRequest, MimeType, GoogleDriveRequest
             success: { files in
                 Task {
                     do {
-                        try await self.handleSuccessFiles(files, imageView: nil, viewController: UIViewController())
+                        try await self.handleSuccessFiles(files, imageView: nil, viewController: UIViewController()) {
+                            self.hideActivityIndicator()
+                        }
                         completion()
                     } catch {
                         print("Ошибка при обработке файлов: \(error)")

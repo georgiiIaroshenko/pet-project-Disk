@@ -5,7 +5,7 @@ class LatterFileViewController: UIViewController, Storyboardable, ShowAlert, Act
     
     @IBOutlet weak var menuCollectionView: UICollectionView!
     @IBOutlet weak var mainCollectionView: UICollectionView!
-    private var activityIndicator: UIActivityIndicatorView!
+//    private var activityIndicator: UIActivityIndicatorView!
     private var selectedGroupIndex = 0
 
     var latterFileViewModel: LatterFileViewModel!

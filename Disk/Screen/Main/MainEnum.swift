@@ -4,6 +4,9 @@
 enum MIMEType {
     static let folder = "application/vnd.google-apps.folder"
     static let snapshot = "application/vnd.google-apps.snapshot"
+    static let audio = "audio/mp3"
+    static let audio1 = "audio/wav"
+
 }
 protocol MimeType {
     func mimeTypeCategory(for mimeTypeString: String) -> MimeTypeCategory

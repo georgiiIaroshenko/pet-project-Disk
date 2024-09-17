@@ -4,7 +4,7 @@ import UIKit
 
 protocol ImageRequestProtocol: TokenService {
     func universalGetImage(stringURL: String) async throws -> Data
-    func getImageGoogleDrive(fileID: String) async throws -> Data
+    func getDataOneFileGoogleDrive(fileID: String) async throws -> Data
 }
 
 extension ImageRequestProtocol {
@@ -17,7 +17,7 @@ extension ImageRequestProtocol {
         return try await performImageRequest(url: url)
     }
     
-    func getImageGoogleDrive(fileID: String) async throws -> Data {
+    func getDataOneFileGoogleDrive(fileID: String) async throws -> Data {
         return try await withCheckedThrowingContinuation { continuation in
             googleCheckAndUpdateToken { _ in
                 DatabaseService.shared.getToken(nameStorage: .google, tokenType: .accessToken) { result in
@@ -74,9 +74,9 @@ extension ImageRequestProtocol {
             throw URLError(.badServerResponse, userInfo: [NSLocalizedDescriptionKey: "Ошибка: сервер вернул статус \(httpResponse.statusCode)"])
         }
         
-        guard let mimeType = response?.mimeType, mimeType.hasPrefix("image") else {
-            throw URLError(.cannotDecodeContentData, userInfo: [NSLocalizedDescriptionKey: "Ошибка: ответ не является изображением"])
-        }
+//        guard let mimeType = response?.mimeType, mimeType.hasPrefix("image") else {
+//            throw URLError(.cannotDecodeContentData, userInfo: [NSLocalizedDescriptionKey: "Ошибка: ответ не является изображением"])
+//        }
     }
 }
 

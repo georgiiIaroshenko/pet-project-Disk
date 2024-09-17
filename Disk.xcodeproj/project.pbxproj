@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6616026C2C98918E0056734E /* OpenFileCollectionViewAudioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6616026B2C98918E0056734E /* OpenFileCollectionViewAudioCell.swift */; };
 		6618C6302C35600F00909E4F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6618C62F2C35600F00909E4F /* ProfileViewController.swift */; };
 		6618C6322C35602100909E4F /* LatterFileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6618C6312C35602100909E4F /* LatterFileViewController.swift */; };
 		6618C6342C35602D00909E4F /* AllFileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6618C6332C35602D00909E4F /* AllFileViewController.swift */; };
@@ -115,6 +116,7 @@
 		2B842FE7A433C317A1071028 /* Pods_DiskTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DiskTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FBB95D41A8FF3B2EA07126D /* Pods-DiskTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DiskTests.debug.xcconfig"; path = "Target Support Files/Pods-DiskTests/Pods-DiskTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5B7CF059BEF7BF5C70376A6C /* Pods-Disk-DiskUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disk-DiskUITests.release.xcconfig"; path = "Target Support Files/Pods-Disk-DiskUITests/Pods-Disk-DiskUITests.release.xcconfig"; sourceTree = "<group>"; };
+		6616026B2C98918E0056734E /* OpenFileCollectionViewAudioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFileCollectionViewAudioCell.swift; sourceTree = "<group>"; };
 		6618C62F2C35600F00909E4F /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		6618C6312C35602100909E4F /* LatterFileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatterFileViewController.swift; sourceTree = "<group>"; };
 		6618C6332C35602D00909E4F /* AllFileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllFileViewController.swift; sourceTree = "<group>"; };
@@ -466,8 +468,6 @@
 			isa = PBXGroup;
 			children = (
 				66A6F4E22C8A12030011F2C3 /* MainEnum.swift */,
-				6639DED02C4D0EFD0073503F /* CastomCell */,
-				666FFB092C5F933B00AA2E2A /* OpenFileViewControllers */,
 				66D6A7B42C63D15800876FE7 /* TabBarController */,
 			);
 			path = Main;
@@ -529,6 +529,7 @@
 		666FFB092C5F933B00AA2E2A /* OpenFileViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				6616026B2C98918E0056734E /* OpenFileCollectionViewAudioCell.swift */,
 				66C72D522C693F870070DBEA /* OpenFileCollectionViewImageCell.swift */,
 				66D5A2752C79044E006E085B /* OpenFileCollectionViewFolderCell.swift */,
 				666FFB0A2C5F936100AA2E2A /* OpenFileViewController.swift */,
@@ -620,6 +621,8 @@
 		66D6A7B42C63D15800876FE7 /* TabBarController */ = {
 			isa = PBXGroup;
 			children = (
+				6639DED02C4D0EFD0073503F /* CastomCell */,
+				666FFB092C5F933B00AA2E2A /* OpenFileViewControllers */,
 				66D6A7B52C63D18A00876FE7 /* TabBarController.swift */,
 				6618C62C2C355FCF00909E4F /* Profile */,
 				6618C62E2C355FED00909E4F /* LatterFile */,
@@ -928,6 +931,7 @@
 				66D6A7B82C63D30900876FE7 /* ProfileCoordinator.swift in Sources */,
 				6618C6322C35602100909E4F /* LatterFileViewController.swift in Sources */,
 				66A5145A2C8889C1009F66A7 /* CreatePlaceholderProtocol.swift in Sources */,
+				6616026C2C98918E0056734E /* OpenFileCollectionViewAudioCell.swift in Sources */,
 				666445A92C5A59B600744F2D /* ChangeDateAndWeight.swift in Sources */,
 				666F56EB2C8B383400ED0ADE /* AlertProtocol.swift in Sources */,
 				66528EE82C3094FC00806F28 /* OnboardingViewModel.swift in Sources */,
@@ -1241,7 +1245,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8B22TYWGHP;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "-234.DiskTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1262,7 +1266,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8B22TYWGHP;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "-234.DiskTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
