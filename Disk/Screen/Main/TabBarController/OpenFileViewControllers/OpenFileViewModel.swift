@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-class OpenFileViewModel: ShowAlert, PerformRequest, MimeType, GoogleDriveRequest, ImageRequestProtocol, ActivityViewFullScreen {
+class OpenFileViewModel: ShowAlert, PerformRequest, GoogleDriveRequest, ImageRequestProtocol, ActivityViewFullScreen {
     
     var idFile: String
     var nameFile: String
@@ -76,18 +76,11 @@ class OpenFileViewModel: ShowAlert, PerformRequest, MimeType, GoogleDriveRequest
         performRequest(
             request: { self.requestsGoogleOneFile(nameStorage: .google, fileID: self.idFile, completion: $0) },
             success: { fileId in
+                self.file?.removeAll()
+                self.file?.append(fileId)
+                
                 Task {
                     do {
-                        self.file?.removeAll()
-                        self.file?.append(fileId)
-                        
-//                        guard let fileId = self.file?.first else {
-//                            print("Ошибка: файл не найден")
-//                            DispatchQueue.main.async {
-//                                completion(.failure(.noData))
-//                            }
-//                            return
-//                        }
                         guard let audioURL = fileId.id else {
                             print("Ошибка: URL аудиофайла отсутствует")
                             DispatchQueue.main.async {

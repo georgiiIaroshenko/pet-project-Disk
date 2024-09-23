@@ -1,73 +1,66 @@
 
-
-
 enum MIMEType {
-    static let folder = "application/vnd.google-apps.folder"
-    static let snapshot = "application/vnd.google-apps.snapshot"
-    static let audio = "audio/mp3"
-    static let audio1 = "audio/wav"
-
-}
-protocol MimeType {
-    func mimeTypeCategory(for mimeTypeString: String) -> MimeTypeCategory
-}
-extension MimeType {
-    func mimeTypeCategory(for mimeTypeString: String) -> MimeTypeCategory {
-        if let imageType = MimeTypeImage(rawValue: mimeTypeString) {
-            return .image(imageType)
-        } else if let videoType = MimeTypeVideo(rawValue: mimeTypeString) {
-            return .video(videoType)
-        } else if let documentType = MimeTypeDocument(rawValue: mimeTypeString) {
-            return .document(documentType)
-        } else {
-            return .other(mimeTypeString)
-        }
-    }
-}
-
-
-enum MimeTypeCategory {
-    case image(MimeTypeImage)
-    case video(MimeTypeVideo)
-    case document(MimeTypeDocument)
-    case other(String)
+    //MARK: - Списки форматов
+    // Папки
+    private static let folderTypes: [String] = [
+        "application/vnd.google-apps.folder",
+        "application/vnd.google-apps.snapshot"
+    ]
     
-    var mimeTypeString: String {
-        switch self {
-        case .image(let mimeType): return mimeType.rawValue
-        case .video(let mimeType): return mimeType.rawValue
-        case .document(let mimeType): return mimeType.rawValue
-        case .other(let mimeType): return mimeType
-        }
+    // Аудио форматы
+    private static let audioTypes: [String] = [
+        "audio/mp3",
+        "audio/wav",
+        "audio/mpeg",
+        "audio/aac",
+        "audio/flac"
+    ]
+    
+    // Видео форматы
+    private static let videoTypes: [String] = [
+        "video/mp4",
+        "video/quicktime",
+        "video/x-matroska"
+    ]
+    
+    // Изображения
+    private static let imageTypes: [String] = [
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+        "image/tiff"
+    ]
+    // Документы
+    private static let documentTypes: [String] = [
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // DOCX
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // XLSX
+        "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation", // PPTX
+        "text/plain",
+        "application/pdf"
+    ]
+    
+    //MARK: - Проверка по категориям
+    
+    static func isFolderType(_ mimeType: String) -> Bool {
+        return folderTypes.contains(mimeType)
+    }
+    
+    static func isAudioType(_ mimeType: String) -> Bool {
+        return audioTypes.contains(mimeType)
+    }
+    
+    static func isVideoType(_ mimeType: String) -> Bool {
+        return videoTypes.contains(mimeType)
+    }
+    
+    static func isImageType(_ mimeType: String) -> Bool {
+        return imageTypes.contains(mimeType)
+    }
+    
+    static func isDocumentType(_ mimeType: String) -> Bool {
+        return documentTypes.contains(mimeType)
     }
 }
-
-// Вложенные enum для каждой категории
-enum MimeTypeImage: String {
-    case png = "image/png"
-    case jpeg = "image/jpeg"
-    case googlePhoto = "application/vnd.google-apps.photo"
-}
-
-enum MimeTypeVideo: String {
-    case mkv = "video/mkv"
-    case mp4 = "video/mp4"
-}
-
-enum MimeTypeDocument: String {
-    case pdf = "application/pdf"
-    case word = "application/msword"
-    case googleDoc = "application/vnd.google-apps.document"
-}
-
-//func mimeTypeCategory(for mimeTypeString: String) -> MimeTypeCategory {
-//    if let imageType = MimeTypeImage(rawValue: mimeTypeString) {
-//        return .image(imageType)
-//    } else if let videoType = MimeTypeVideo(rawValue: mimeTypeString) {
-//        return .video(videoType)
-//    } else if let documentType = MimeTypeDocument(rawValue: mimeTypeString) {
-//        return .document(documentType)
-//    } else {
-//        return .other(mimeTypeString)
-//    }
-//}

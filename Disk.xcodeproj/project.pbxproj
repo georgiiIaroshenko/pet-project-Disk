@@ -17,6 +17,7 @@
 		6618C63C2C3560BE00909E4F /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6618C63B2C3560BE00909E4F /* ProfileModel.swift */; };
 		6618C63E2C3560CF00909E4F /* LatterFileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6618C63D2C3560CF00909E4F /* LatterFileModel.swift */; };
 		6618C6402C3560DC00909E4F /* AllFileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6618C63F2C3560DC00909E4F /* AllFileModel.swift */; };
+		662648272C9C991C003DB6F5 /* OpenFileCollectionViewVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662648262C9C9918003DB6F5 /* OpenFileCollectionViewVideoCell.swift */; };
 		6639DECF2C4927D60073503F /* AlertFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6639DECE2C4927D60073503F /* AlertFactory.swift */; };
 		6639DED22C4D0F1D0073503F /* CastomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6639DED12C4D0F1D0073503F /* CastomTableViewCell.xib */; };
 		6639DED52C4D10950073503F /* CastomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6639DED42C4D10950073503F /* CastomTableViewCell.swift */; };
@@ -126,6 +127,7 @@
 		6618C63B2C3560BE00909E4F /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		6618C63D2C3560CF00909E4F /* LatterFileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatterFileModel.swift; sourceTree = "<group>"; };
 		6618C63F2C3560DC00909E4F /* AllFileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllFileModel.swift; sourceTree = "<group>"; };
+		662648262C9C9918003DB6F5 /* OpenFileCollectionViewVideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFileCollectionViewVideoCell.swift; sourceTree = "<group>"; };
 		662B618F2C42FDD80055F907 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		662B61902C42FDD80055F907 /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		662B61912C42FDD80055F907 /* FirebaseAppCheckInterop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseAppCheckInterop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -364,6 +366,17 @@
 			path = LatterFile;
 			sourceTree = "<group>";
 		};
+		662648282CA189B4003DB6F5 /* OpenFileCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				662648262C9C9918003DB6F5 /* OpenFileCollectionViewVideoCell.swift */,
+				6616026B2C98918E0056734E /* OpenFileCollectionViewAudioCell.swift */,
+				66C72D522C693F870070DBEA /* OpenFileCollectionViewImageCell.swift */,
+				66D5A2752C79044E006E085B /* OpenFileCollectionViewFolderCell.swift */,
+			);
+			path = OpenFileCollectionViewCell;
+			sourceTree = "<group>";
+		};
 		6639DED02C4D0EFD0073503F /* CastomCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -529,9 +542,7 @@
 		666FFB092C5F933B00AA2E2A /* OpenFileViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				6616026B2C98918E0056734E /* OpenFileCollectionViewAudioCell.swift */,
-				66C72D522C693F870070DBEA /* OpenFileCollectionViewImageCell.swift */,
-				66D5A2752C79044E006E085B /* OpenFileCollectionViewFolderCell.swift */,
+				662648282CA189B4003DB6F5 /* OpenFileCollectionViewCell */,
 				666FFB0A2C5F936100AA2E2A /* OpenFileViewController.swift */,
 				666FFB0C2C5F937D00AA2E2A /* OpenFileViewModel.swift */,
 				666FFB0E2C5F938E00AA2E2A /* OpenFileModel.swift */,
@@ -957,6 +968,7 @@
 				66528EEC2C30951800806F28 /* OnboardingModel.swift in Sources */,
 				66EE5D022C7BBDCF000F8346 /* FullScreenActivity.swift in Sources */,
 				66FF134F2C8F3D6000944C08 /* ShadowProtocol.swift in Sources */,
+				662648272C9C991C003DB6F5 /* OpenFileCollectionViewVideoCell.swift in Sources */,
 				66A5145D2C88B311009F66A7 /* LocalizableLoginScreenEnum.swift in Sources */,
 				666FFB0B2C5F936100AA2E2A /* OpenFileViewController.swift in Sources */,
 				666FFB0D2C5F937D00AA2E2A /* OpenFileViewModel.swift in Sources */,
