@@ -12,7 +12,25 @@
 				<string>com.googleusercontent.apps.720844085651-jmc7vvv0mvva1tp7hoefsc0m08vuavnc</string>
 			</array>
 		</dict>
+
+<dict>
+            <key>CFBundleURLName</key>
+            <string>YandexLoginSDK</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>yx<7b8b94d6684e4966b708c19fcf5df8cf></string>
+            </array>
+        </dict>
+
 	</array>
+
+<key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>yandexauth</string>
+        <string>yandexauth2</string>
+        <string>yandexauth4</string>
+    </array>
+
 	<key>GIDClientID</key>
 	<string>720844085651-jmc7vvv0mvva1tp7hoefsc0m08vuavnc.apps.googleusercontent.com</string>
 </dict>
