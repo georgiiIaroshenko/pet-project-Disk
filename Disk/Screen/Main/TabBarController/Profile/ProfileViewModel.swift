@@ -2,6 +2,7 @@
 import UIKit
 import GoogleSignIn
 import FirebaseAuth
+import YandexLoginSDK
 
 class ProfileViewModel: ShowAlert, GoogleDriveRequest, ImageRequestProtocol {
     private var fileUser: UserAbout?
@@ -68,6 +69,11 @@ class ProfileViewModel: ShowAlert, GoogleDriveRequest, ImageRequestProtocol {
             }
         }
     }
+    
+    @objc func authorizeYandex(v: UIViewController) {
+        try! YandexLoginSDK.shared.authorize(with: v)
+    }
+    
     func createPieMassiveViewCell() -> PieMassiveViewCell {
         let pieMassive = PieMassiveViewCell(usedSizeDouble: usedSpace(), 
                                             usedSizeString: usedSpaceString(),

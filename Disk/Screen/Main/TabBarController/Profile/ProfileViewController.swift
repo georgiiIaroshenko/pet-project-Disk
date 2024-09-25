@@ -1,4 +1,5 @@
 import UIKit
+import YandexLoginSDK
 import DGCharts
 
 class ProfileViewController: UIViewController, Storyboardable, ActivityViewFullScreen {
@@ -7,6 +8,7 @@ class ProfileViewController: UIViewController, Storyboardable, ActivityViewFullS
     @IBOutlet weak var imageViewGoogleUser: UIImageView!
     @IBOutlet weak var pieCollectionView: UICollectionView!
     @IBOutlet weak var menuPieCollectionView: UICollectionView!
+    @IBOutlet weak var yandexAuthButtom: UIButton!
     private var selectedGroupIndex = 0
 
         
@@ -40,6 +42,7 @@ class ProfileViewController: UIViewController, Storyboardable, ActivityViewFullS
         
         setupPublicFile()
         setupImageViewGoogleUser()
+        setupYandexAuthButtom()
         setupConstraints()
         applyShadows()
         publicFile.setTitle("Опубликованые файлы", for: .normal)
@@ -82,6 +85,17 @@ class ProfileViewController: UIViewController, Storyboardable, ActivityViewFullS
         imageViewGoogleUser.translatesAutoresizingMaskIntoConstraints = false
     }
     
+    func setupYandexAuthButtom() {
+        view.addSubview(yandexAuthButtom)
+        yandexAuthButtom.translatesAutoresizingMaskIntoConstraints = false
+        yandexAuthButtom.setTitle("Yandex", for: .normal)
+        yandexAuthButtom.backgroundColor = .systemBlue
+        yandexAuthButtom.addTarget(self, action: #selector(authorizeYandex), for: .touchUpInside)
+    }
+    @objc func authorizeYandex() {
+        try! YandexLoginSDK.shared.authorize(with: self)
+    }
+    
     // MARK: - Constraints
     
     func setupConstraints() {
@@ -106,6 +120,13 @@ class ProfileViewController: UIViewController, Storyboardable, ActivityViewFullS
         imageViewGoogleUser.snp.makeConstraints { make in
             make.top.equalTo(publicFile.snp.bottom).offset(50)
             make.width.height.equalTo(100)
+            make.centerX.equalToSuperview()
+        }
+        
+        yandexAuthButtom.snp.makeConstraints { make in
+            make.top.equalTo(imageViewGoogleUser.snp.bottom).offset(5)
+            make.height.equalTo(50)
+            make.width.equalTo(100)
             make.centerX.equalToSuperview()
         }
     }
