@@ -220,9 +220,9 @@ extension OpenFileViewController: UICollectionViewDataSource {
                     switch result {
                     case .success(let data):
                         audioCell.setup(audioData: data)
-                        DispatchQueue.main.async {
+//                        DispatchQueue.main.async {
                             self.hideActivityIndicator()
-                        }
+//                        }
                     case .failure(let error):
                         self.showErrorAlert(viewController: self, message: error)
                     }

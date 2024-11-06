@@ -3,8 +3,11 @@ import UIKit
 
 class LatterFileViewModel: GoogleDriveRequest {
     
-    var googleUser: GoogleUserStruct?
-    var file: [Files]?
+    @Published private(set) var isLoading: Bool = false
+    @Published private(set) var files: [Files] = []
+    @Published private(set) var error: Error?
+    var onFilesUpdated: (() -> Void)?
+    var onLoadingStateChanged: ((Bool) -> Void)?
     
     var coordinator: LatterFileCoordinator
     
@@ -12,32 +15,35 @@ class LatterFileViewModel: GoogleDriveRequest {
         self.coordinator = coordinator!
     }
     
-    func requestAllFile(collection: UICollectionView,complited:@escaping () -> ()) {
-        
-        requestsAllFile(nameStorage: .google) { result in
-            switch result {
-            case .success(let newFile):
-                self.file = newFile
-                complited()
-            case .failure(let error):
-                print(" User error \(error)")
+    func requestAllFile() {
+            guard !isLoading else { return }
+            isLoading = true
+            requestsAllFile(nameStorage: .google) { result in
+                self.isLoading = false
+                switch result {
+                case .success(let newFile):
+                    self.files = newFile
+                case .failure(let error):
+                    self.error = error
+                }
             }
         }
-    }
     
     
     func nameMenuCell(indexPath: IndexPath) -> String {
-        let nameService = file![indexPath.item].name
+        guard files.indices.contains(indexPath.item) else { return "" }
+        let nameService = files[indexPath.item].name
         return nameService
     }
     
     func massiveGoogleFileMainCell(indexPath: IndexPath) -> [GoogleFile] {
-        let groups = file![indexPath.item].googleFile
+        guard files.indices.contains(indexPath.item) else { return [] }
+        let groups = files[indexPath.item].googleFile
         return groups
     }
     
     func massiveFiles() -> Int {
-        return file?.count ?? 0
+        return files.count
     }
 }
 

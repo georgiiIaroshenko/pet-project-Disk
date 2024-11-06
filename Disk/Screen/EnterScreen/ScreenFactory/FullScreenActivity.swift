@@ -26,7 +26,9 @@ class ActivityFactory {
         activityIndicator.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
-        self.activityIndicator.startAnimating()
+        DispatchQueue.main.async {
+            self.activityIndicator.startAnimating()
+        }
     }
     
     func hideActivityIndicator() {

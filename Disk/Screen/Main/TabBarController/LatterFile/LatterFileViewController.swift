@@ -1,11 +1,12 @@
 
 import UIKit
+import Combine
 
 class LatterFileViewController: UIViewController, Storyboardable, ShowAlert, ActivityViewFullScreen {
     
     @IBOutlet weak var menuCollectionView: UICollectionView!
     @IBOutlet weak var mainCollectionView: UICollectionView!
-//    private var activityIndicator: UIActivityIndicatorView!
+    private var cancellables: Set<AnyCancellable> = []
     private var selectedGroupIndex = 0
 
     var latterFileViewModel: LatterFileViewModel!
@@ -13,27 +14,57 @@ class LatterFileViewController: UIViewController, Storyboardable, ShowAlert, Act
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        showActivityIndicator(view: self.view)
+
         view.backgroundColor = .white
         navigationController?.navigationBar.tintColor = .black
         navigationItem.title = "Все файлы"
         setupMainColletionView()
         setupMenuColletionView()
         setupConstraints()
+        
+        setupBindings()
         }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         showActivityIndicator(view: self.view)
-        self.latterFileViewModel.requestAllFile(collection: self.menuCollectionView){ [weak self] in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                self.menuCollectionView.reloadData()
-                self.mainCollectionView.reloadData()
-                self.hideActivityIndicator()
-            }
-        }
+        self.latterFileViewModel.requestAllFile()
     }
+    
+    func setupBindings() {
+            latterFileViewModel.$isLoading
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] isLoading in
+                    guard let self = self else { return }
+                    if isLoading {
+                        self.showActivityIndicator(view: self.view)
+                    } else {
+                        self.hideActivityIndicator()
+                    }
+                }
+                .store(in: &cancellables)
+            
+            latterFileViewModel.$files
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] _ in
+                    self?.menuCollectionView.reloadData()
+                    self?.mainCollectionView.reloadData()
+                }
+                .store(in: &cancellables)
+            
+            latterFileViewModel.$error
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] error in
+                    if let error = error {
+                        self?.showErrorAlert(viewController: self!, message: error)
+                    }
+                }
+                .store(in: &cancellables)
+        }
+    
     func shadows () {
         menuCollectionView.applyShadow()
         mainCollectionView.applyShadow()

@@ -6,39 +6,48 @@
 //
 
 import UIKit
-import FirebaseAuth
 import Firebase
-import FirebaseCore
 import GoogleSignIn
 import YandexLoginSDK
-
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-    var coordinator: AppCoordinator?
-    
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        do {
-            try YandexLoginSDK.shared.activate(with: "7b8b94d6684e4966b708c19fcf5df8cf")
-        } catch {
-            print("Failed to activate Yandex Login SDK: \(error.localizedDescription)")
-        }
+
         FirebaseApp.configure()
+        
+        // Настройка основного окна приложения
+        self.window = UIWindow(frame: UIScreen.main.bounds)
         let navController = UINavigationController()
         navController.isNavigationBarHidden = true
         
         let appCoordinator = AppCoordinator(type: .app, navicationController: navController)
         appCoordinator.start()
-        self.window = UIWindow(frame: UIScreen.main.bounds)
+        
         self.window?.rootViewController = navController
         self.window?.makeKeyAndVisible()
+        
         return true
     }
+    
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        return YandexLoginSDK.shared.tryHandleOpenURL(url)
+        // Проверяем, что это наш redirect URL
+        if url.absoluteString.starts(with: "yourapp://auth/callback") {
+            if let code = extractAuthorizationCode(from: url) {
+                // Теперь у вас есть код авторизации
+                print("Authorization code: \(code)")
+            }
+        }
+        return true
+    }
+
+    func extractAuthorizationCode(from url: URL) -> String? {
+        // Разбираем URL и извлекаем код авторизации
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        return components?.queryItems?.first(where: { $0.name == "code" })?.value
     }
 }
 

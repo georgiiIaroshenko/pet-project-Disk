@@ -1,4 +1,5 @@
 import UIKit
+import SafariServices
 import YandexLoginSDK
 import DGCharts
 
@@ -93,7 +94,15 @@ class ProfileViewController: UIViewController, Storyboardable, ActivityViewFullS
         yandexAuthButtom.addTarget(self, action: #selector(authorizeYandex), for: .touchUpInside)
     }
     @objc func authorizeYandex() {
-        try! YandexLoginSDK.shared.authorize(with: self)
+        let clientID = "7b8b94d6684e4966b708c19fcf5df8cf"
+        let redirectURI = "yourapp://auth/callback"
+        let authURLString = "https://oauth.yandex.ru/authorize?response_type=code&client_id=\(clientID)&redirect_uri=\(redirectURI)"
+        
+
+        if let authURL = URL(string: authURLString) {
+            let safariVC = SFSafariViewController(url: authURL)
+            present(safariVC, animated: true, completion: nil)
+        }
     }
     
     // MARK: - Constraints
@@ -239,3 +248,5 @@ extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDel
         }
     }
 }
+
+

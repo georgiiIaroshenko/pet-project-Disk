@@ -71,7 +71,7 @@ class OpenFileViewModel: ShowAlert, PerformRequest, GoogleDriveRequest, ImageReq
     
     func requestAudioFileId(viewController: UIViewController, completion: @escaping (Result<Data, NetworkError>) -> Void) async {
 //        DispatchQueue.main.async {
-//            self.showActivityIndicator(view: viewController.view)
+        await self.showActivityIndicator(view: viewController.view)
 //        }
         performRequest(
             request: { self.requestsGoogleOneFile(nameStorage: .google, fileID: self.idFile, completion: $0) },
@@ -83,21 +83,21 @@ class OpenFileViewModel: ShowAlert, PerformRequest, GoogleDriveRequest, ImageReq
                     do {
                         guard let audioURL = fileId.id else {
                             print("Ошибка: URL аудиофайла отсутствует")
-                            DispatchQueue.main.async {
+//                            DispatchQueue.main.async {
                                 completion(.failure(.noData))
-                            }
+//                            }
                             return
                         }
                         
                         let data = try await self.getDataOneFileGoogleDrive(fileID: audioURL)
-                        DispatchQueue.main.async {
+//                        DispatchQueue.main.async {
                             completion(.success(data))
-                        }
+//                        }
                     } catch {
                         print("Ошибка при обработке файлов: \(error)")
-                        DispatchQueue.main.async {
+//                        DispatchQueue.main.async {
                             completion(.failure(.noData))
-                        }
+//                        }
                     }
                 }
             },
@@ -109,9 +109,9 @@ class OpenFileViewModel: ShowAlert, PerformRequest, GoogleDriveRequest, ImageReq
     }
     
     func requestImageFileId(viewController: UIViewController, imageView: UIImageView) {
-        DispatchQueue.main.async {
+//        DispatchQueue.main.async {
             self.showActivityIndicator(view: viewController.view)
-        }
+//        }
         performRequest(
             request: { self.requestsGoogleOneFile(nameStorage: .google, fileID: self.idFile, completion: $0) },
             success: { fileId in
